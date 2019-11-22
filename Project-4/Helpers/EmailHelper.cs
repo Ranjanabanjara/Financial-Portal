@@ -45,11 +45,11 @@ namespace Project_4.Helpers
             {
                 try
                 {
-                    var senderEmail = $"Bug Tracker Admin<{ConfiguredEmail}>";
+                    var senderEmail = $"Financial Portal Admin<{ConfiguredEmail}>";
                     var mailMsg = new MailMessage(senderEmail, model.Email)
                     {
                         Subject = "Account Confirmation",
-                        Body = $"Please <a href=\"{callbackUrl}\"> Click here! <a/>  to confirm your account",
+                        Body = $" :) Thank you for joining.Please <a href=\"{callbackUrl}\"> Click here! <a/>  to confirm your account.",
                         IsBodyHtml = true
 
                     };
@@ -71,7 +71,7 @@ namespace Project_4.Helpers
             {
                 try
                 {
-                    var senderEmail = $"Bug Tracker Admin<{ConfiguredEmail}>";
+                    var senderEmail = $"Financial Portal Admin<{ConfiguredEmail}>";
                     var mailMsg = new MailMessage(senderEmail, model.Email)
                     {
                         Subject = "Reset Password",

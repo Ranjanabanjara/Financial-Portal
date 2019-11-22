@@ -210,6 +210,7 @@
     <Content Include="Contents\style.css" />
     <Content Include="fonts\adminpro-icon.svg" />
     <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="Images\favicon.jpg" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\member.jpg" />
     <Content Include="Images\admin.jpg" />
