@@ -428,6 +428,11 @@ namespace Project_4.Controllers
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
+        public ActionResult CustomLogOff()
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Login", "Account");
+        }
 
         //
         // GET: /Account/ExternalLoginFailure

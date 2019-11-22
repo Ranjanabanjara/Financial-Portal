@@ -183,6 +183,7 @@
     <Compile Include="Helpers\AvatarUploadValidator.cs" />
     <Compile Include="Helpers\EmailHelper.cs" />
     <Compile Include="Helpers\StringUtilities.cs" />
+    <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\BankAccount.cs" />
@@ -210,6 +211,7 @@
     <Content Include="Contents\style.css" />
     <Content Include="fonts\adminpro-icon.svg" />
     <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="Images\default.jpg" />
     <Content Include="Images\favicon.jpg" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\member.jpg" />

@@ -1,29 +1,6 @@
-/*-----------------------------------------------------------------------------------
 
-    Template Name: Adminpro Admin Template
-    Template URI: http://SRTtheme.com/
-    Description: Adminpro is a responsive admin template based on the famous Bootstrap framework, made it with love in every backend, with tons of beautiful features ready to use.
-    Author: SRTtheme
-    Author URI: http://SRTtheme.com/
-    Version: 1.0
 
------------------------------------------------------------------------------------
-    
-    CSS INDEX
-    ===================
-	
-    1. Theme Default CSS (body, link color, section etc)
-	2. Header Customize CSS
-	3. Header top Menu CSS
-	4. Main Menu CSS
-	5. Tinymce CSS
-	6. Breadcome CSS
 
------------------------------------------------------------------------------------*/
-
-/*----------------------------------------*/
-/*  1.  Theme default CSS
-/*----------------------------------------*/
 html, body {font-family: 'Open Sans', sans-serif;font-weight:400;background: #03a9f0}
 .floatleft {float:left}
 .floatright {float:right}
@@ -46,6 +23,10 @@ a:hover {
 a:active, a:hover, a:focus {
   outline: 0 none;
   text-decoration:none;
+}
+.textsmall {
+    font-size: 16px;
+ 
 }
 ul{
 list-style: outside none none;
@@ -181,6 +162,7 @@ padding: 0
 /*----------------------------------------*/
 .admin-logo{
 	padding:10px 0px;
+ 
 }
 .header-top-area{
 	background:#303030;
@@ -812,7 +794,7 @@ ul.breadcome-menu li a:hover{
 /*----------------------------------------*/
 .sparkline-hd, .smart-sparkline-hd, .sparkline7-hd, .sparkline8-hd, .sparkline9-hd, .sparkline10-hd, .sparkline11-hd, .sparkline12-hd, .sparkline13-hd, .sparkline14-hd, .sparkline15-hd, .sparkline16-hd{
 	padding: 15px 20px;
-    background: #f9f9f9;
+    background: #57a450;
 	border-bottom:1px solid #ccc;
 }
 .main-spark-hd, .smart-main-spark-hd, .main-spark7-hd, .main-sparkline8-hd, .main-sparkline9-hd, .main-sparkline10-hd, .main-sparkline11-hd, .main-sparkline12-hd, .main-sparkline13-hd, .main-sparkline14-hd, .main-sparkline15-hd, .main-sparkline16-hd{

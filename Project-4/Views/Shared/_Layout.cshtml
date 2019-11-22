@@ -1,4 +1,5 @@
 ﻿@using Project_4.Models;
+@using Project_4.Helpers;  
 
 
 <!doctype html>
@@ -12,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- favicon
         ============================================ -->
-    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="~/Images/favicon.jpg">
     <!-- Google Fonts
         ============================================ -->
     <link href="fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i,800" rel="stylesheet">
@@ -56,9 +57,163 @@
 </head>
 
 <body>
-    
+    <!-- Header top area start-->
+    <div class="header-top-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                    <div class="admin-logo">
+                        <a href="#">
+                            <img src="~/Images/logo.png" width="40" alt="" />
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-5 col-md-5 col-sm-0 col-xs-12">
+                    <div class="header-top-menu">
+                        <ul class="nav navbar-nav mai-top-nav">
+                            <li class="nav-item">
+                                <a href="@Url.Action("Dashboard","Home")" class="nav-link">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">Households</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">Project <span class="angle-down-topmenu"><i class="fa fa-angle-down"></i></span></a>
+                                <div role="menu" class="dropdown-menu animated flipInX">
+                                    <a href="#" class="dropdown-item">Company Info</a>
+                                    <a href="#" class="dropdown-item">Documentation</a>
+                                    <a href="#" class="dropdown-item">Expert Backend</a>
+                                    <a href="#" class="dropdown-item">Expert FrontEnd</a>
+                                    <a href="#" class="dropdown-item">Contact Support</a>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-9 col-sm-6 col-xs-12">
+                    <div class="header-right-info">
+                        <ul class="nav navbar-nav mai-top-nav header-right-menu">
+
+                            <li class="nav-item">
+                                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="indicator-nt"></span></a>
+                                <div role="menu" class="notification-author dropdown-menu animated flipInX">
+                                    <div class="notification-single-top">
+                                        <h1>Notifications</h1>
+                                    </div>
+                                    <ul class="notification-menu">
+
+                                        <li>
+                                            <a href="#">
+                                                <div class="notification-icon">
+                                                    <span class="fa fa-remove"></span>
+                                                </div>
+                                                <div class="notification-content">
+                                                    <span class="notification-date">16 Sept</span>
+                                                    <h2>Sulaiman din</h2>
+                                                    <p>Please done this project as soon possible.</p>
+                                                </div>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                    <div class="notification-view">
+                                        <a href="#">View All Notification</a>
+                                    </div>
+                                </div>
+                            </li>
+                           
+                                <li class="nav-item textsmall">
+                                    <a href="#" data-toggle="dropdown">
+
+                                        <img src="@UserHelper.GetAvatarPath()" width="20" class="img-circle" /> <span class="textsmall">@UserHelper.GetUserFirstName()</span>  <span><i class="fa fa-angle-down"></i></span>
+
+                                    </a>
+                                    <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated flipInX">
+                                        <li>
+                                            <a href="#"><i class="fa fa-hand-o-right"></i> <span>@UserHelper.GetUserEmail()</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-hand-o-right"></i> <span>My Account</span></a>
+                                        </li>
+
+                                        <li>
+                                            <a href="@Url.Action("CustomLogOff", "Account")"><i class="fa fa-hand-o-right"></i> <span>Log Out</span></a>
+                                        </li>
+                                        
+
+                                    </ul>
+                                </li>
+                            
+                                <li class="nav-item nav-setting-open">
+                                    <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-tasks"></i></a>
+
+                                    <div role="menu" class="admintab-wrap menu-setting-wrap menu-setting-wrap-bg dropdown-menu animated flipInX">
+                                        <ul class="nav nav-tabs custon-set-tab">
+                                            <li class="active">
+                                                <a data-toggle="tab" href="#Projects">Households</a>
+                                            </li>
+                                            <li>
+                                                <a data-toggle="tab" href="#Notes">Notes</a>
+                                            </li>
+
+                                            <li>
+                                                <a data-toggle="tab" href="#Settings">Settings</a>
+                                            </li>
+                                        </ul>
+
+                                        <div class="tab-content">
+                                            <div id="Projects" class="tab-pane fade">
+                                                <div class="projects-settings-wrap">
+                                                    <div class="note-heading-indicate">
+                                                        <h2><i class="fa fa-cube"></i>Households</h2>
+                                                        <p> You have 20 projects. 5 not completed.</p>
+                                                    </div>
+                                                    <div class="project-st-list-area project-st-menu-scrollbar">
+                                                        <ul class="projects-st-menu-list">
+                                                            <li>
+                                                                <a href="#">
+                                                                    <div class="project-list-flow">
+                                                                        <div class="projects-st-heading">
+                                                                            <h2>Web Development</h2>
+                                                                            <p> The point of using Lorem Ipsum is that it has a more or less normal.</p>
+                                                                            <span class="project-st-time">1 hours ago</span>
+                                                                        </div>
+                                                                        <div class="projects-st-content">
+                                                                            <p>Completion with: 28%</p>
+                                                                            <div class="progress progress-mini">
+                                                                                <div style="width: 28%;" class="progress-bar progress-bar-danger"></div>
+                                                                            </div>
+                                                                            <p>Project end: 4:00 pm - 12.06.2014</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </li>
+
+
+                            </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Header top area end-->
     <!-- Main Menu area start-->
-    <div class="main-menu-area mg-tb-40">
+    @*<div class="main-menu-area mg-tb-40">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -67,69 +222,73 @@
                             <a data-toggle="tab" href="#Home">Home</a>
                         </li>
                         <li>
-                            <a data-toggle="tab" href="#mailbox">Mail</a>
+                            <a data-toggle="tab" href="#Profile">My Profile</a>
                         </li>
-                       
+
                         <li>
                             <a data-toggle="tab" href="#Charts">Charts</a>
                         </li>
                         <li>
                             <a data-toggle="tab" href="#Tables">Tables</a>
                         </li>
-                       
-                       
-                      
+
+
+
                     </ul>
                     <div class="tab-content custom-menu-content">
-                        <div id="Home" class="tab-pane tab-custon-menu-bg animated flipInX">
+                        <div id="Home" class="tab-pane in active tab-custon-menu-bg animated flipInX">
                             <ul class="main-menu-dropdown">
-                               
+
                                 <li>
-                                    <a href="dashboard-2.html">Dashboard v.2</a>
+                                    <a href="#">Dashboard</a>
                                 </li>
-                              
+
                                 <li>
-                                    <a href="widgets.html">Widgets</a>
+                                    <a href="#">Other</a>
                                 </li>
                             </ul>
                         </div>
-                        <div id="mailbox" class="tab-pane tab-custon-menu-bg animated flipInX">
+                        <div id="Profile" class="tab-pane tab-custon-menu-bg animated flipInX">
                             <ul class="main-menu-dropdown">
                                 <li>
-                                    <a href="inbox.html">Inbox</a>
+                                    <a href="#">View</a>
                                 </li>
                                 <li>
-                                    <a href="view-mail.html">View Mail</a>
+                                    <a href="#">Change Password</a>
                                 </li>
                                 <li>
-                                    <a href="compose-mail.html">Compose Mail</a>
+                                    <a href="#">Change Info</a>
                                 </li>
+                                <li>
+                                    <a href="#">Change Profile Picture</a>
+                                </li>
+
                             </ul>
                         </div>
-             
+
                         <div id="Tables" class="tab-pane tab-custon-menu-bg animated flipInX">
                             <ul class="main-menu-dropdown">
                                 <li>
-                                    <a href="static-table.html">Static Table</a>
+                                    <a href="#">Static Table</a>
                                 </li>
                                 <li>
-                                    <a href="data-table.html">Data Table</a>
+                                    <a href="#">Data Table</a>
                                 </li>
                             </ul>
                         </div>
-                        <div id="Charts" class="tab-pane in active tab-custon-menu-bg animated flipInX">
+                        <div id="Charts" class="tab-pane tab-custon-menu-bg animated flipInX">
                             <ul class="main-menu-dropdown">
                                 <li>
-                                    <a href="bar-charts.html">Bar Charts</a>
+                                    <a href="#">Bar Charts</a>
                                 </li>
-                               
+
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
     <!-- Main Menu area End-->
     <!-- Mobile Menu start -->
     <div class="mobile-menu-area">
@@ -140,56 +299,59 @@
                         <nav id="dropdown">
                             <ul class="mobile-menu-nav">
                                 <li>
-                                    <a data-toggle="collapse" data-target="#Charts" href="#">Home <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                    <ul class="collapse dropdown-header-top">
+                                    <a data-toggle="collapse" data-target="#Homemob" href="#">Home <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                    <ul id="Homemob" class="collapse dropdown-header-top">
                                         <li>
-                                            <a href="dashboard.html">Dashboard v.1</a>
+                                            <a href="#">Dashboard</a>
                                         </li>
-                                      
+
                                         <li>
-                                            <a href="widgets.html">Widgets</a>
+                                            <a href="#">Other</a>
                                         </li>
                                     </ul>
                                 </li>
                                 <li>
-                                    <a data-toggle="collapse" data-target="#demo" href="#">Mailbox <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                    <ul id="demo" class="collapse dropdown-header-top">
+                                    <a data-toggle="collapse" data-target="#Profilemob" href="#">My Profile<span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                    <ul id="Profilemob" class="collapse dropdown-header-top">
                                         <li>
-                                            <a href="inbox.html">Inbox</a>
+                                            <a href="inbox.html">View</a>
                                         </li>
                                         <li>
-                                            <a href="view-mail.html">View Mail</a>
+                                            <a href="view-mail.html">Change Password</a>
                                         </li>
                                         <li>
-                                            <a href="compose-mail.html">Compose Mail</a>
+                                            <a href="compose-mail.html">Change Info</a>
+                                        </li>
+                                        <li>
+                                            <a href="compose-mail.html">Change Profile Picture</a>
                                         </li>
                                     </ul>
                                 </li>
 
-                               
+
                                 <li>
                                     <a data-toggle="collapse" data-target="#Chartsmob" href="#">Charts <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
                                     <ul id="Chartsmob" class="collapse dropdown-header-top">
                                         <li>
-                                            <a href="bar-charts.html">Bar Charts</a>
+                                            <a href="#">Bar Charts</a>
                                         </li>
-                                     
+
                                     </ul>
                                 </li>
                                 <li>
                                     <a data-toggle="collapse" data-target="#Tablesmob" href="#">Tables <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
                                     <ul id="Tablesmob" class="collapse dropdown-header-top">
                                         <li>
-                                            <a href="static-table.html">Static Table</a>
+                                            <a href="#">Static Table</a>
                                         </li>
                                         <li>
-                                            <a href="data-table.html">Data Table</a>
+                                            <a href="#">Data Table</a>
                                         </li>
                                     </ul>
                                 </li>
-                               
-                              
-                              
+
+
+
                             </ul>
                         </nav>
                     </div>
@@ -202,7 +364,7 @@
     @RenderBody()
 
 
-  
+
 
     <!-- jquery
         ============================================ -->
