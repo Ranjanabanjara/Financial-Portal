@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Project_4.Models;
 
+
 namespace Project_4.Controllers
 {
     [Authorize]
@@ -15,9 +16,44 @@ namespace Project_4.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ManageController()
         {
+        }
+        public ActionResult MyProfile(ManageMessageId? message)
+        {
+            ViewBag.StatusMessage =
+                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                : message == ManageMessageId.IncorrectPassword ? "Your password new password and old password doesn't match, please try again."
+                 : message == ManageMessageId.ChangeInfoSuccess ? "Your Personal Information has been changed."
+                : "";
+
+            var profileUser = db.Users.Find(User.Identity.GetUserId());
+            var EditProfileVm = new UserProfileViewModel();
+            EditProfileVm.FirstName = profileUser.FirstName;
+            EditProfileVm.LastName = profileUser.LastName;
+            EditProfileVm.DisplayName = profileUser.DisplayName;
+            EditProfileVm.AvatarPath = profileUser.AvatarPath;
+
+            return View(EditProfileVm);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MyProfile(UserProfileViewModel modal)
+        {
+            var EditedUser = db.Users.Find(User.Identity.GetUserId());
+            EditedUser.FirstName = modal.FirstName;
+            EditedUser.LastName = modal.LastName;
+            EditedUser.DisplayName = modal.DisplayName;
+            EditedUser.AvatarPath = modal.AvatarPath;
+            db.SaveChanges();
+
+
+            return View(modal);
+
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -381,7 +417,9 @@ namespace Project_4.Controllers
             SetPasswordSuccess,
             RemoveLoginSuccess,
             RemovePhoneSuccess,
-            Error
+            Error,
+            IncorrectPassword,
+            ChangeInfoSuccess
         }
 
 #endregion
