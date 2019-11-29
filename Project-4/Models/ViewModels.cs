@@ -14,5 +14,12 @@ namespace Project_4.Models
             public string AvatarPath { get; set; }
 
      }
-    
+
+    public class WizardViewModel
+    {
+        public BankAccount BankAccount = new BankAccount();
+        public Budget Budget = new Budget();
+        public BudgetItem BudgetItem = new BudgetItem();
+
+    }
 }

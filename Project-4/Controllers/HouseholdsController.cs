@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Project_4.Models;
 
 namespace Project_4.Controllers
@@ -18,6 +19,40 @@ namespace Project_4.Controllers
         public ActionResult Index()
         {
             return View(db.Households.ToList());
+        }
+        public ActionResult Setup(int id)
+        {
+            return View();
+        }
+       
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Setup(WizardViewModel model)
+        {
+            var user = db.Users.Find(User.Identity.GetUserId());
+            if (ModelState.IsValid)
+            {
+                //Add and save Bank Account
+                model.BankAccount.Created = DateTime.Now;
+                model.BankAccount.OwnerId = User.Identity.GetUserId();
+                db.BankAccounts.Add(model.BankAccount);
+                db.SaveChanges();
+
+                //Add and save Budget
+                model.Budget.Created = DateTime.Now;
+                model.Budget.HouseholdId = (int)user.HouseholdId;
+                db.SaveChanges();
+
+
+                //Add and save BudgetItem
+                model.BudgetItem.Created = DateTime.Now;
+                model.BudgetItem.BudgetId = model.Budget.Id;
+                db.SaveChanges();
+                return RedirectToAction("Details", "Households", new { id = user.HouseholdId });
+            }
+            return View(model);
+
         }
 
         // GET: Households/Details/5
@@ -38,6 +73,8 @@ namespace Project_4.Controllers
         // GET: Households/Create
         public ActionResult Create()
         {
+
+            ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName");
             return View();
         }
 
@@ -46,13 +83,15 @@ namespace Project_4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Greeting,Created")] Household household)
+        public ActionResult Create([Bind(Include = "Id,Name,Greeting")] Household household)
         {
+            var user = db.Users.Find(User.Identity.GetUserId());
             if (ModelState.IsValid)
             {
+                household.Created = DateTime.Now;
                 db.Households.Add(household);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Setup", "Households", new { id = household.Id });
             }
 
             return View(household);

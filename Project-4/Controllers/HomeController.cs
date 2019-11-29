@@ -8,7 +8,12 @@ namespace Project_4.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        [Authorize]
+        public ActionResult Lobby()
+        {
+            return View();
+        }
+        public ActionResult Dashboard()
         {
             return View();
         }

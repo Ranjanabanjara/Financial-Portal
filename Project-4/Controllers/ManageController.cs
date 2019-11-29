@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Project_4.Helpers;
 using Project_4.Models;
 
 
@@ -25,7 +27,7 @@ namespace Project_4.Controllers
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.IncorrectPassword ? "Your password new password and old password doesn't match, please try again."
+                : message == ManageMessageId.IncorrectPassword ? "Your new password and old password doesn't match, please try again."
                  : message == ManageMessageId.ChangeInfoSuccess ? "Your Personal Information has been changed."
                 : "";
 
@@ -42,14 +44,31 @@ namespace Project_4.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult MyProfile(UserProfileViewModel modal)
+        public ActionResult MyProfile(UserProfileViewModel modal, HttpPostedFileBase Avatar)
         {
-            var EditedUser = db.Users.Find(User.Identity.GetUserId());
-            EditedUser.FirstName = modal.FirstName;
-            EditedUser.LastName = modal.LastName;
-            EditedUser.DisplayName = modal.DisplayName;
-            EditedUser.AvatarPath = modal.AvatarPath;
-            db.SaveChanges();
+
+            if (ModelState.IsValid)
+            {
+                var EditedUser = db.Users.Find(User.Identity.GetUserId());
+                EditedUser.FirstName = modal.FirstName;
+                EditedUser.LastName = modal.LastName;
+                EditedUser.DisplayName = modal.DisplayName;
+                EditedUser.AvatarPath = EditedUser.AvatarPath;
+                if (Avatar != null)
+                {
+                    if (AvatarUploadValidator.IsWebFriendlyImage(Avatar))
+                    {
+                        var fileName = Path.GetFileName(Avatar.FileName);
+                        var onlyFilename = Path.GetFileNameWithoutExtension(fileName);
+                        onlyFilename = StringUtilities.URLFriendly(onlyFilename);
+                        fileName = $"{onlyFilename}_{DateTime.Now.Ticks}{Path.GetExtension(fileName)}";
+                        Avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatars/"), fileName));
+                       EditedUser.AvatarPath = "/Avatars/" + fileName;
+                    }
+                }
+                db.SaveChanges();
+                return RedirectToAction("MyProfile", "Manage", new { Message = ManageMessageId.ChangeInfoSuccess });
+            }
 
 
             return View(modal);
@@ -91,7 +110,8 @@ namespace Project_4.Controllers
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+               message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                 :message == ManageMessageId.ChangeInfoSuccess ? "Your Personal Information has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
                 : message == ManageMessageId.Error ? "An error has occurred."
@@ -264,7 +284,7 @@ namespace Project_4.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return RedirectToAction("MyProfile", "Manage", new { Message = ManageMessageId.IncorrectPassword });
             }
             var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
             if (result.Succeeded)
@@ -274,7 +294,7 @@ namespace Project_4.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                return RedirectToAction("MyProfile", "Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
             AddErrors(result);
             return View(model);

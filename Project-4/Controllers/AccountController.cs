@@ -187,13 +187,8 @@ namespace Project_4.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code }, protocol: Request.Url.Scheme);
-
-                    await EmailHelper.ComposeEmailAsync(model, callbackUrl);
-                    return RedirectToAction("NewRegister", "Account");
+                    return RedirectToAction("Lobby", "Home");
 
 
                 }
@@ -201,7 +196,7 @@ namespace Project_4.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return RedirectToAction("Register", "Account");
+            return View(model);
         }
        
        
@@ -488,7 +483,7 @@ namespace Project_4.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Households");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

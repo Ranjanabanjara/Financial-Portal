@@ -28,6 +28,13 @@ a:active, a:hover, a:focus {
     font-size: 16px;
  
 }
+.fontstyle1{
+    font-size: 24px;
+    color: #f019c4;
+    padding:5px;
+    font-weight:600;
+
+}
 ul{
 list-style: outside none none;
 margin: 0;
@@ -165,7 +172,8 @@ padding: 0
  
 }
 .header-top-area{
-	background:#303030;
+	background-color:#303030;
+  
 }
 .header-top-menu ul.header-top-nav li{
 	display:inline-block;
@@ -605,10 +613,15 @@ ul.setting-panel-list li{
 .custom-menu-content ul.main-menu-dropdown{
 	position:relative;
 	z-index:99;
+   
 }
 .custom-menu-content ul.main-menu-dropdown li{
 	display:inline-block;
+    width:100%;
+    background-color:#03a9f4;
+
 }
+
 .custom-menu-content ul.main-menu-dropdown li a{
 	padding:20px 20px;
 	display:block;
@@ -670,13 +683,15 @@ ul.setting-panel-list li{
 	padding:10px 0px;
 }
 .header-top-area{
-	background:#303030;
+	
+    background-color: #0f2032;
 	
 }
 .header-top-menu ul.header-top-nav{
 	text-align:right;
 }
-.header-top-menu ul.header-top-nav li{
+.header-top-menu ul.header-top-nav 
+{
 	display:inline-block;
 	position:relative;
 }
@@ -768,6 +783,14 @@ ul.setting-panel-list li{
 .breadcome-heading h2{
 	color:#303030;
 	font-size:20px;
+}
+.style {
+    color: #2485ce;
+    font-size: 35px;
+}
+.bc {
+    
+    background-color:black;
 }
 .breadcome-list{
 	padding:20px;

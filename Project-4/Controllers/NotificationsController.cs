@@ -49,10 +49,11 @@ namespace Project_4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,HouseholdId,ReceipentId,Created,Subject,IsRead,Body")] Notification notification)
+        public ActionResult Create([Bind(Include = "Id,HouseholdId,ReceipentId,Subject,IsRead,Body")] Notification notification)
         {
             if (ModelState.IsValid)
             {
+                notification.Created = DateTime.Now;
                 db.Notifications.Add(notification);
                 db.SaveChanges();
                 return RedirectToAction("Index");

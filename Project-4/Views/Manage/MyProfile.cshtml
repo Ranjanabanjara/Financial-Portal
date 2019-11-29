@@ -6,95 +6,148 @@
 
 
 
-@*<div class="row">
+<div class="row" style="padding-top:10px">
+    <div class="col-md-12">
+        <h2 class=" text-center text-danger">@ViewBag.StatusMessage</h2>
+    </div>
+</div>
 
-    <div class="col-md-4">
-      
-        <section class="panel">
-            <div class="panel-body">
-                <div class="thumb-info">
-                    <img src="@UserHelper.GetAvatarPath()" class="rounded img-responsive" alt="Profile Picture">
-                    <div class="thumb-info">
-                        <span class="thumb-info-inner">@UserHelper.GetUserFirstName()</span>
-
+<div class="row">
+    <div class="col-lg-offset-1 col-lg-10">
+        <div class="sparkline12-list shadow-reset mg-t-30">
+            <div class="sparkline12-hd">
+                <div class="main-sparkline12-hd">
+                    <h1>Edit Personal Information</h1>
+                    <div class="sparkline12-outline-icon">
+                        <span class="sparkline12-collapse-link"><i class="fa fa-chevron-up"></i></span>
+                        <span><i class="fa fa-refresh"></i></span>
+                        <span class="sparkline12-collapse-close"><i class="fa fa-times"></i></span>
                     </div>
                 </div>
-
-      
-
-                <hr class="dotted short">
-
-                <div class="sparkline16-outline-icon">
-                    <a rel="tooltip" data-placement="bottom" target="_blank" href="http://www.facebook.com" data-original-title="Facebook"><i class="fa fa-facebook"></i><span>Facebook</span></a>
-                    <a rel="tooltip" data-placement="bottom" href="http://www.twitter.com" data-original-title="Twitter"><i class="fa fa-twitter"></i><span>Twitter</span></a>
-                    <a rel="tooltip" data-placement="bottom" href="http://www.linkedin.com" data-original-title="Linkedin"><i class="fa fa-linkedin"></i><span>Linkedin</span></a>
-                </div>
-
             </div>
-        </section>
-
-    </div>
-    <div class="col-md-8 col-lg-6">
-        <h2 class="text-success">@ViewBag.StatusMessage</h2>
-
-        <div class="tabs">
-            <ul class="nav nav-tabs tabs-primary">
-                <li class="active">
-                    <a href="#overview" data-toggle="tab">Change Personal Information</a>
-                </li>
-                <li>
-                    <a href="#edit" data-toggle="tab">Change Password</a>
-                </li>
-
-            </ul>
-            <div class="tab-content">
-                change personal information
-                <div id="overview" class="tab-pane active">
-
-                    @using (Html.BeginForm("MyProfile", "Manage", FormMethod.Post, new { style = "width:90%;" }))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.ValidationSummary("", new { @class = "text-danger" })
-                        <h4 class="mb-xlg">Personal Information</h4>
-                        <fieldset>
-                            <h2 class="text-success">@ViewBag.StatusMessage</h2>
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.FirstName, new { @class = "col-md-3 control-label" })
-                                <div class="col-md-8">
-                                    @Html.TextAreaFor(m => m.FirstName, new { @class = "form-control" })
-                                </div>
-                            </div>
+            <div class="sparkline12-graph">
+                <div class="basic-login-form-ad">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="all-form-element-inner">
+                                @using (Html.BeginForm("MyProfile", "Manage", FormMethod.Post, new { style = "width:90%;", enctype="Multipart/form-data"}))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary("", new { @class = "text-danger" })
 
 
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.LastName, new { @class = "col-md-3 control-label" })
-                                <div class="col-md-8">
-                                    @Html.TextAreaFor(m => m.LastName, new { @class = "form-control" })
-                                </div>
-                            </div>
 
-                            <div class="form-group">
-                                @Html.LabelFor(m => m.DisplayName, new { @class = "col-md-3 control-label" })
-                                <div class="col-md-8">
-                                    @Html.TextAreaFor(m => m.DisplayName, new { @class = "form-control" })
-                                </div>
-                            </div>
-                        </fieldset>
-                        <hr class="dotted">
-                        <div class="panel-footer">
-                            <div class="row">
-                                <div class="col-md-3 col-md-offset-3">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
 
-                                </div>
+                                    <div class="form-group-inner">
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                @Html.LabelFor(m => m.FirstName, new { @class = "login2 pull-right pull-right-pro" })
+
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+
+                                                @Html.TextAreaFor(m => m.FirstName, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-inner">
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                @Html.LabelFor(m => m.LastName, new { @class = "login2 pull-right pull-right-pro" })
+
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+
+                                                @Html.TextAreaFor(m => m.LastName, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-inner">
+                                        <div class="row">
+                                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                @Html.LabelFor(m => m.DisplayName, new { @class = "login2 pull-right pull-right-pro" })
+
+                                            </div>
+                                            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+
+                                                @Html.TextAreaFor(m => m.DisplayName, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-inner">
+                                        <div class="row">
+                                            <div class="col-lg-1"></div>
+                                            
+                                            <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                                                <a href="#" title="Choose file">
+
+                                                    <img src="@UserHelper.GetAvatarPath()" width="100" class="img-circle" />
+
+                                                </a>
+
+                                            </div>
+                           
+                                            <div class="col-lg-1 col-md-8 col-sm-6 col-xs-6">
+
+                                                <span> <i class="fa fa-user"></i> @Html.TextBox("Avatar", null, new { type = "file", name = "Avatar" })</span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12"></div>
+
+                                        <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
+                                            <div class="login-horizental cancel-wp pull-left">
+
+                                                <button class="btn btn-danger" type="submit">Save Changes</button>
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+
+
+                                }
+
                             </div>
                         </div>
-                    }
+                    </div>
                 </div>
-                change password information
-              
             </div>
         </div>
     </div>
-</div>*@
+</div>
 
+<div class="row" style="padding-bottom:40px">
+    <div class="col-lg-offset-1 col-lg-10">
+        <div class="sparkline12-list shadow-reset mg-t-30">
+            <div class="sparkline12-hd">
+                <div class="main-sparkline12-hd">
+                    <h1>Change Password</h1>
+                    <div class="sparkline12-outline-icon">
+                        <span class="sparkline12-collapse-link"><i class="fa fa-chevron-up"></i></span>
+                        <span class="sparkline"><i class="fa fa-refresh"></i></span>
+                        <span class="sparkline12-collapse-close"><i class="fa fa-times"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="sparkline12-graph">
+                <div class="basic-login-form-ad">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="all-form-element-inner">
+
+                                @Html.Partial("_ChangePassword", new ChangePasswordViewModel())
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

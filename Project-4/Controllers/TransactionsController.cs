@@ -51,10 +51,11 @@ namespace Project_4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,BankAccountId,OwnerId,BudgetItemId,TransactionTypeId,Amount,Memo,Created,Updated")] Transaction transaction)
+        public ActionResult Create([Bind(Include = "Id,BankAccountId,OwnerId,BudgetItemId,TransactionTypeId,Amount,Memo")] Transaction transaction)
         {
             if (ModelState.IsValid)
             {
+                transaction.Created = DateTime.Now;
                 db.Transactions.Add(transaction);
                 db.SaveChanges();
                 return RedirectToAction("Index");

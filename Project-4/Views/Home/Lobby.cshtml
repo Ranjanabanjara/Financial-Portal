@@ -1,0 +1,322 @@
+﻿@model Project_4.Models.Household
+
+@using Project_4.Models;
+@using Project_4.Helpers;
+@{ 
+    Layout = null;
+}
+
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- favicon
+        ============================================ -->
+    <link rel="shortcut icon" type="image/x-icon" href="~/Images/favicon.jpg">
+    <!-- Google Fonts
+        ============================================ -->
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i,800" rel="stylesheet">
+    <!-- Bootstrap CSS
+        ============================================ -->
+
+    <link href="~/Contents/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap CSS
+        ============================================ -->
+    <link href="~/Contents/font-awesome.min.css" rel="stylesheet" />
+    <!-- adminpro icon CSS
+        ============================================ -->
+    <link href="~/Contents/adminpro-custon-icon.css" rel="stylesheet" />
+    <!-- meanmenu icon CSS
+        ============================================ -->
+    <link href="~/Contents/meanmenu.min.css" rel="stylesheet" />
+    <!-- mCustomScrollbar CSS
+        ============================================ -->
+    <link href="~/Contents/jquery.mCustomScrollbar.min.css" rel="stylesheet" />
+    <!-- animate CSS
+        ============================================ -->
+    <link href="~/Contents/animate.css" rel="stylesheet" />
+    <!-- normalize CSS
+        ============================================ -->
+
+    <link href="~/Contents/normalize.css" rel="stylesheet" />
+    <!-- charts CSS
+        ============================================ -->
+
+    <link href="~/Contents/c3.min.css" rel="stylesheet" />
+    <!-- style CSS
+        ============================================ -->
+    <link href="~/Contents/style.css" rel="stylesheet" />
+    <!-- responsive CSS
+        ============================================ -->
+
+    <link href="~/Contents/responsive.css" rel="stylesheet" />
+    <!-- modernizr JS
+        ============================================ -->
+    <script src="~/Scripts/modernizr-2.8.3.min.js"></script>
+</head>
+
+<body>
+    <!-- Header top area start-->
+    <div class="header-top-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="admin-logo">
+                        <a href="#">
+                            <img src="~/Images/pig2.png" class="img-circle" width="40" alt="" />
+                            <span class="h5">𝖋𝖎𝖓𝖆𝖓𝖈𝖎𝖆𝖑 𝖕𝖔𝖗𝖙𝖆𝖑</span>
+                        </a>
+                    </div>
+                </div>
+
+     
+                <div class="col-xs-6">
+                    <div class="header-right-info">
+                        <ul class="nav navbar-nav mai-top-nav header-right-menu">
+
+                          
+
+                            <li class="nav-item textsmall">
+                                <a href="#" data-toggle="dropdown">
+
+                                    <img src="@UserHelper.GetAvatarPath()" width="60" class="img-circle" />  <span class="textsmall">@UserHelper.GetUserFirstName()</span>  <span><i class="fa fa-angle-down"></i></span>
+
+                                </a>
+                                <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated flipInX">
+                                    <li>
+                                        <a href="#"><i class="fa fa-location-arrow"></i> <span>@UserHelper.GetUserEmail()</span></a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("MyProfile", "Manage")"><i class="fa fa-hand-o-right"></i> <span>My Profile</span></a>
+                                    </li>
+
+                                    <li>
+                                        <a href="@Url.Action("CustomLogOff", "Account")"><i class="fa fa-hand-o-right"></i> <span>Log Out</span></a>
+                                    </li>
+
+
+                                </ul>
+                            </li>
+
+                        
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Header top area end-->
+
+    <!-- Mobile Menu start -->
+    <div class="mobile-menu-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="mobile-menu">
+                        <nav id="dropdown">
+                            <ul class="mobile-menu-nav">
+                                <li>
+                                    <a data-toggle="collapse" data-target="#Homemob" href="#">Home <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                    <ul id="Homemob" class="collapse dropdown-header-top">
+                                        <li>
+                                            <a href="@Url.Action("Dashboard", "Home")">Dashboard</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="@Url.Action("Create", "Households")">Create Household</a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("Create", "Invitations")">Invite Member</a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("Create", "Transactions")">Create Transaction</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a data-toggle="collapse" data-target="#Profilemob" href="#">My Profile<span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                    <ul id="Profilemob" class="collapse dropdown-header-top">
+                                        <li>
+                                            <a href="inbox.html">View</a>
+                                        </li>
+                                        <li>
+                                            <a href="view-mail.html">Change Password</a>
+                                        </li>
+                                        <li>
+                                            <a href="compose-mail.html">Change Info</a>
+                                        </li>
+                                        <li>
+                                            <a href="compose-mail.html">Change Profile Picture</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+
+                                <li>
+                                    <a data-toggle="collapse" data-target="#Chartsmob" href="#">Charts <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                    <ul id="Chartsmob" class="collapse dropdown-header-top">
+                                        <li>
+                                            <a href="#">Bar Charts</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a data-toggle="collapse" data-target="#Tablesmob" href="#">Tables <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                    <ul id="Tablesmob" class="collapse dropdown-header-top">
+                                        <li>
+                                            <a href="#">Static Table</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Data Table</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mobile Menu end -->
+
+    <div class="row" style="padding:40px">
+        <h2 class="text-center"><b>WELCOME!</b> To The Lobby of Financial Portal</h2>
+        <div>
+            <div class="row">
+                <div class="col-lg-offset-1 col-lg-10">
+                    <div class="sparkline12-list shadow-reset mg-t-30">
+                        <div class="sparkline12-hd">
+                            <div class="main-sparkline12-hd">
+                                <h1>Create Household</h1>
+                                <div class="sparkline12-outline-icon">
+                                    <span class="sparkline12-collapse-link"><i class="fa fa-chevron-up"></i></span>
+                                    <span><i class="fa fa-refresh"></i></span>
+                                    <span class="sparkline12-collapse-close"><i class="fa fa-times"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sparkline12-graph">
+                            <div class="basic-login-form-ad">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="all-form-element-inner">
+
+                                            @using (Html.BeginForm("Create","Households", FormMethod.Post))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                                <div class="form-group-inner">
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "login2 pull-right pull-right" })
+
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group-inner">
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                            @Html.LabelFor(model => model.Greeting, htmlAttributes: new { @class = "login2 pull-right pull-right-pro" })
+
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                            @Html.EditorFor(model => model.Greeting, new { htmlAttributes = new { @class = "form-control" } })
+                                                            @Html.ValidationMessageFor(model => model.Greeting, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row">
+                                                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12"></div>
+
+                                                    <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
+                                                        <div class="login-horizental cancel-wp pull-left">
+
+                                                            <button class="btn btn-success btn-block" type="submit">Create</button>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-1 col-md-2 col-sm-2 col-xs-3">
+                                                        <div class="login-horizental cancel-wp pull-left">
+
+                                                            <button class="btn btn-default btn-block">@Html.ActionLink("Cancel", "Dashboard", "Home")</button>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+
+
+
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- jquery
+        ============================================ -->
+
+    <script src="~/Scripts/jquery-1.11.3.min.js"></script>
+    <!-- bootstrap JS
+        ============================================ -->
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <!-- meanmenu JS
+        ============================================ -->
+    <script src="~/Scripts/jquery.meanmenu.js"></script>
+    <!-- mCustomScrollbar JS
+        ============================================ -->
+
+    <script src="~/Scripts/jquery.mCustomScrollbar.concat.min.js"></script>
+    <!-- sticky JS
+        ============================================ -->
+
+    <script src="~/Scripts/jquery.sticky.js"></script>
+    <!-- scrollUp JS
+        ============================================ -->
+
+    <script src="~/Scripts/jquery.scrollUp.min.js"></script>
+
+    <!-- main JS
+        ============================================ -->
+
+    <script src="~/Scripts/main.js"></script>
+
+  
+</body>
+
+</html>
+
+
+
+

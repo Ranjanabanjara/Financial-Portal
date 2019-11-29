@@ -49,10 +49,11 @@ namespace Project_4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,HouseholdId,AccountType,OwnerId,Name,StartingBalance,CurrentBalance,Created")] BankAccount bankAccount)
+        public ActionResult Create([Bind(Include = "Id,HouseholdId,AccountType,OwnerId,Name,StartingBalance,CurrentBalance")] BankAccount bankAccount)
         {
             if (ModelState.IsValid)
             {
+                bankAccount.Created = DateTime.Now;
                 db.BankAccounts.Add(bankAccount);
                 db.SaveChanges();
                 return RedirectToAction("Index");

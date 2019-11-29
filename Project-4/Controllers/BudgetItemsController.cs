@@ -48,10 +48,13 @@ namespace Project_4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,BudgetId,Name,Description,TargetAmount,CurrentAmount,Created,Updated")] BudgetItem budgetItem)
+        public ActionResult Create([Bind(Include = "Id,BudgetId,Name,Description,TargetAmount,CurrentAmount")] BudgetItem budgetItem)
         {
+
             if (ModelState.IsValid)
             {
+                budgetItem.Created = DateTime.Now;
+                budgetItem.Updated = DateTime.Now;
                 db.BudgetItems.Add(budgetItem);
                 db.SaveChanges();
                 return RedirectToAction("Index");

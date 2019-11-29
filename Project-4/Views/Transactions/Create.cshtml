@@ -1,10 +1,8 @@
 ﻿@model Project_4.Models.Transaction
 
-@{
-    ViewBag.Title = "Create";
-}
+
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-offset-1 col-lg-10">
             <div class="sparkline12-list shadow-reset mg-t-30">
                 <div class="sparkline12-hd">
                     <div class="main-sparkline12-hd">
@@ -26,13 +24,14 @@
                                     {
                                         @Html.AntiForgeryToken()
                                         @Html.HiddenFor(m => m.OwnerId)
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                         <div class="form-group-inner">
                                             <div class="row">
-                                                <div class="col-lg-3">
-                                                    @Html.LabelFor(model => model.BankAccountId, "BankAccount", htmlAttributes: new { @class = "login2 pull-right pull-right-pro col-lg-3" })
+                                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                    @Html.LabelFor(m => m.BankAccountId,"Bank Account", new { @class = "login2 pull-right pull-right-pro" })
 
                                                 </div>
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
                                                     @Html.DropDownList("BankAccountId", null, htmlAttributes: new { @class = "form-control" })
                                                     @Html.ValidationMessageFor(model => model.BankAccountId, "", new { @class = "text-danger" })
                                                 </div>
@@ -40,11 +39,11 @@
                                         </div>
                                         <div class="form-group-inner">
                                             <div class="row">
-                                                <div class="col-lg-3">
-                                                    @Html.LabelFor(model => model.BudgetItemId, "BudgetItem", htmlAttributes: new { @class = "login2 pull-right pull-right-pro col-lg-3" })
+                                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                    @Html.LabelFor(m => m.BudgetItemId, "BudgetItem", new { @class = "login2 pull-right pull-right-pro" })
 
                                                 </div>
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
                                                     @Html.DropDownList("BudgetItemId", null, htmlAttributes: new { @class = "form-control" })
                                                     @Html.ValidationMessageFor(model => model.BudgetItemId, "", new { @class = "text-danger" })
                                                 </div>
@@ -52,23 +51,23 @@
                                         </div>
                                         <div class="form-group-inner">
                                             <div class="row">
-                                                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-                                                    <label class="login2 pull-right pull-right-pro">TransactionType </label>
+                                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                    @Html.LabelFor(m => m.TransactionTypeId, "TransactionType", new { @class = "login2 pull-right pull-right-pro" })
 
                                                 </div>
-                                                <div class="col-lg-8 col-md-6 col-sm-6 col-xs-12">
-                                                    @Html.DropDownList("TransactionTypeId", null, htmlAttributes: new { @class = "form-control pull-left" })
+                                                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                    @Html.DropDownList("TransactionTypeId", null, htmlAttributes: new { @class = "form-control" })
                                                     @Html.ValidationMessageFor(model => model.TransactionTypeId, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group-inner">
                                             <div class="row">
-                                                <div class="col-lg-3">
+                                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
                                                     @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "login2 pull-right pull-right-pro col-lg-3" })
 
                                                 </div>
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
                                                     @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
                                                     @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
                                                 </div>
@@ -76,30 +75,41 @@
                                         </div>
                                         <div class="form-group-inner">
                                             <div class="row">
-                                                <div class="col-lg-3">
+                                                <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
                                                     @Html.LabelFor(model => model.Memo, htmlAttributes: new { @class = "login2 pull-right pull-right-pro col-lg-3" })
 
                                                 </div>
-                                                <div class="col-lg-8">
+                                                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
                                                     @Html.EditorFor(model => model.Memo, new { htmlAttributes = new { @class = "form-control" } })
                                                     @Html.ValidationMessageFor(model => model.Memo, "", new { @class = "text-danger" })
                                                 </div>
                                             </div>
                                         </div>
-                                      
                                         <div class="row">
-                                            <div class="col-lg-3"></div>
-                                            <div class="col-lg-2">
+                                            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12"></div>
+
+                                            <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2">
                                                 <div class="login-horizental cancel-wp pull-left">
 
                                                     <button class="btn btn-success btn-block" type="submit">Create</button>
-                                                
+
                                                 </div>
                                             </div>
+                                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                                                <div class="login-horizental cancel-wp pull-left">
+
+                                                    <button class="btn btn-default">@Html.ActionLink("Cancel", "Dashboard", "Home")</button>
+
+                                                </div>
+                                            </div>
+
                                         </div>
 
 
-                                     
+                                   
+
+
+
 
 
                                     }

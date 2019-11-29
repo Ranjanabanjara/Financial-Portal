@@ -72,131 +72,136 @@
                 <div class="col-lg-3"></div>
 
                 <div class="col-lg-6">
+                  
                     <div class="row">
-                        <div class="col-lg-12">
-                            <div class="logo">
-                                <a><img src="~/Images/logo.png" width="100" height="100" class="img-circle" alt="login" /></a>
+
+                        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "adminpro-form", id = "adminpro-register-form", enctype = "Multipart/form-data" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary("", new { @class = "text-danger" })
+                        <div class="login">
+                            <div class="row">
+                                <div class="col-lg-12 text-center">
+                                    <a><img src="~/Images/pig2.png" width="100" class="img-circle" alt="login" /></a><br />
+                                    <h1 class="style">𝖋𝖎𝖓𝖆𝖓𝖈𝖎𝖆𝖑 𝖕𝖔𝖗𝖙𝖆𝖑</h1>
+                                </div>
+
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-
-                        <div class="login-bg">
-
-                            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "adminpro-form", id = "adminpro-register-form", enctype = "Multipart/form-data" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                @Html.ValidationSummary("", new { @class = "text-danger" })
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="login-title text-center">
-                                            <h1>New Users Registration Form!</h1>
-                                            <h6>Already Have An Account? <a href="@Url.Action("Login", "Account")">Click here!</a></h6>
-                                        </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="login-title text-center">
+                                        <h1>New Users Registration Form!</h1>
+                                        <h6>Already Have An Account? <a href="@Url.Action("Login", "Account")">Click here!</a></h6>
                                     </div>
                                 </div>
-                            
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="login-input-head">
-                                            <p>Full Name</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-8">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <div class="login-input-area register-mg-rt">
-                                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "login-input-area register-mg-rt" })
-                                                    <i class="fa fa-user login-user"></i>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="login-input-area register-mg-rt">
-                                                    @Html.TextBoxFor(m => m.LastName, new { @class = "login-input-area register-mg-rt" })
-                                                    <i class="fa fa-user login-user"></i>
-                                                </div>
-                                            </div>
-                                        </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="login-input-head">
+                                        <p>FirstName</p>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="login-input-head">
-                                            <p>DisplayName</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-8">
+                                <div class="col-lg-8">                                    
                                         <div class="login-input-area">
-                                            @Html.TextBoxFor(m => m.DisplayName, new { @class = "login-input-area" })
+                                            @Html.TextBoxFor(m => m.FirstName, new { @class = "login-input-area" })
                                             <i class="fa fa-user login-user"></i>
-                                        </div>
+                                        </div>                                   
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="login-input-head">
+                                        <p>LastName</p>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="login-input-head">
-                                            <p>Email Address</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-8">
+                                <div class="col-lg-8">
                                         <div class="login-input-area">
-                                            @Html.TextBoxFor(m => m.Email, new { @class = "login-input-area" })
-                                            <i class="fa fa-envelope login-user" aria-hidden="true"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="login-input-head">
-                                            <p>Password</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-8">
-                                        <div class="login-input-area">
-                                            @Html.PasswordFor(m => m.Password, new { @class = "login-input-area" })
-                                            <i class="fa fa-lock login-user"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="login-input-head">
-                                            <p>Confarm Password</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-8">
-                                        <div class="login-input-area">
-                                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "login-input-area" })
-                                            <i class="fa fa-lock login-user"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <div class="login-input-head">
-                                            <p>Upload Avatar</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-8">
-                                        <div>
+                                            @Html.TextBoxFor(m => m.LastName, new { @class = "login-input-area" })
                                             <i class="fa fa-user login-user"></i>
-                                            @Html.TextBox("Avatar", null, new { type = "file" })
-
-                                        </div>
+                                        </div>                                   
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="login-input-head">
+                                        <p>DisplayName</p>
                                     </div>
                                 </div>
-
-
-                                <div class="row">
-                                    <div class="col-lg-4"></div>
-                                    <div class="col-lg-6">
-                                        <div class="login-button-pro">
-                                            <button type="submit" class="login-button login-button-lg btn-sm btn-block">Register</button>
-                                        </div>
+                                <div class="col-lg-8">
+                                    <div class="login-input-area">
+                                        @Html.TextBoxFor(m => m.DisplayName, new { @class = "login-input-area" })
+                                        <i class="fa fa-user login-user"></i>
                                     </div>
                                 </div>
-                            }
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="login-input-head">
+                                        <p>Email Address</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="login-input-area">
+                                        @Html.TextBoxFor(m => m.Email, new { @class = "login-input-area" })
+                                        <i class="fa fa-envelope login-user" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="login-input-head">
+                                        <p>Password</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="login-input-area">
+                                        @Html.PasswordFor(m => m.Password, new { @class = "login-input-area" })
+                                        <i class="fa fa-lock login-user"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="login-input-head">
+                                        <p>Confirm Password</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div class="login-input-area">
+                                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "login-input-area" })
+                                        <i class="fa fa-lock login-user"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="login-input-head">
+                                        <p>Upload Avatar</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8">
+                                    <div>
+                                        <i class="fa fa-user login-user"></i>
+                                        @Html.TextBox("Avatar", null, new { type = "file" })
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-lg-4"></div>
+                                <div class="col-lg-4">
+                                    <div class="login-button-pro">
+                                        <button type="submit" class="login-button login-button-lg btn-sm btn-block">Register</button>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
+                        }
                     </div>
 
 
