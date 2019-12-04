@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Project_4.Extensions;
 using Project_4.Helpers;
 using Project_4.Models;
 
@@ -31,7 +32,9 @@ namespace Project_4.Controllers
                  : message == ManageMessageId.ChangeInfoSuccess ? "Your Personal Information has been changed."
                 : "";
 
-            var profileUser = db.Users.Find(User.Identity.GetUserId());
+            
+            var userId = User.Identity.GetUserId();
+            var profileUser = db.Users.FirstOrDefault(u => u.Id == userId);
             var EditProfileVm = new UserProfileViewModel();
             EditProfileVm.FirstName = profileUser.FirstName;
             EditProfileVm.LastName = profileUser.LastName;
@@ -53,7 +56,7 @@ namespace Project_4.Controllers
                 EditedUser.FirstName = modal.FirstName;
                 EditedUser.LastName = modal.LastName;
                 EditedUser.DisplayName = modal.DisplayName;
-                EditedUser.AvatarPath = EditedUser.AvatarPath;
+               
                 if (Avatar != null)
                 {
                     if (AvatarUploadValidator.IsWebFriendlyImage(Avatar))
@@ -65,11 +68,17 @@ namespace Project_4.Controllers
                         Avatar.SaveAs(Path.Combine(Server.MapPath("~/Avatars/"), fileName));
                        EditedUser.AvatarPath = "/Avatars/" + fileName;
                     }
+                   
                 }
+                else {
+                    EditedUser.AvatarPath = EditedUser.AvatarPath;
+                }
+                
                 db.SaveChanges();
+              
+             
                 return RedirectToAction("MyProfile", "Manage", new { Message = ManageMessageId.ChangeInfoSuccess });
             }
-
 
             return View(modal);
 

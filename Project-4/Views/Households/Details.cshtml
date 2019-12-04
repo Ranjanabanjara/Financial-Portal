@@ -1,42 +1,149 @@
 ﻿@model Project_4.Models.Household
-
+@using Project_4.Helpers;
 @{
     ViewBag.Title = "Details";
+    var houseHelper = new HouseholdHelper();
 }
+<!-- Main Menu area start-->
+<div class="main-menu-area mg-tb-40">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="nav nav-tabs custom-menu-wrap">
+                    <li class="active">
+                        <a data-toggle="tab" href="#home"><h5><i class="fa fa-home"></i></h5></a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#member">Members</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#bankAccount">BankAccounts</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#budgetItem">BudgetItems</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#budget">Budgets</a>
+                    </li>
 
-<h2>Details</h2>
+                </ul>
+                <div class="tab-content custom-menu-content">
+                    <div id="home" class="tab-pane in active tab-custon-menu-bg animated flipInX">
+                        <ul class="main-menu-dropdown">
+                            <li>
+                                <h2 class="fs1">@Model.Greeting</h2>
+                            </li>
 
-<div>
-    <h4>Household</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+                        </ul>
+                    </div>
+                    <div id="member" class="tab-pane tab-custon-menu-bg animated flipInX">
+                        <ul class="main-menu-dropdown">
+                            <li>
+                                <a href="@Url.Action("Create", "Invitations")">Invite Member</a>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+                            </li>
+                            <li>
+                                <a href="#">Remove Member</a>
+                            </li>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Greeting)
-        </dt>
+                        </ul>
+                    </div>
+                    <div id="bankAccount" class="tab-pane tab-custon-menu-bg animated flipInX">
+                        <ul class="main-menu-dropdown">
+                            <li>
+                                <a href="@Url.Action("Index", "BankAccounts")">MyAccounts</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Create","BankAccounts")">Create New Account</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index","Transactions")">My Transactions</a>
+                            </li>
 
-        <dd>
-            @Html.DisplayFor(model => model.Greeting)
-        </dd>
+                        </ul>
+                    </div>
+                    <div id="budgetItem" class="tab-pane tab-custon-menu-bg animated flipInX">
+                        <ul class="main-menu-dropdown">
+                            <li>
+                                <a href="@Url.Action("Index", "BudgetItems")">All Categories</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Create", "BudgetItems")">Add New Category</a>
+                            </li>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
+                        </ul>
+                    </div>
+                    <div id="budget" class="tab-pane tab-custon-menu-bg animated flipInX">
+                        <ul class="main-menu-dropdown">
 
-    </dl>
+                            <li>
+                                <a href="@Url.Action("Index", "Budgets")">My Budget</a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<!-- Main Menu area End-->
+
+<div class="feed-mesage-project-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="sparkline11-list shadow-reset mg-tb-30">
+                    <div class="sparkline11-hd">
+                        <div class="main-sparkline11-hd">
+                            <h4>@Model.Name Members</h4>
+                            <div class="sparkline11-outline-icon">
+                                <span class="sparkline11-collapse-link"><i class="fa fa-chevron-up"></i></span>
+                                <span><i class="fa fa-wrench"></i></span>
+                                <span class="sparkline11-collapse-close"><i class="fa fa-times"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sparkline11-graph dashone-comment dashtwo-comment comment-scrollbar">
+                        @foreach (var user in Model.Owner)
+                        {
+                            <div class="daily-feed-list">
+                                <div class="daily-feed-img">
+                                    <a href="#">
+                                        <img src="@user.AvatarPath" alt="" />
+                                    </a>
+                                </div>
+                                <div class="daily-feed-content">
+                                    <h4><i class="fa fa-info-circle"></i> <span>@user.FullName</span></h4>
+                                    <p> <i class="fa fa-envelope"></i>  <span>@user.UserName</span></p>
+                                    <p> <i class="fa fa-bank"></i> <span>BankAccounts: @user.BankAccounts.Count()</span></p>
+
+                                </div>
+                            </div>
+
+
+
+                            <div class="clear"></div>
+                        }
+
+
+                        </div>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,125 @@
+﻿@model Project_4.Models.Household
+@{
+    ViewBag.Title = "ApointSuccessor";
+}
+    <div class="container" style="padding-top:40px">
+        <div class="col-md-offset-1 col-md-10">
+            <div class="admin-pro-accordion-wrap mg-b-40">
+                <div class="alert-title">
+                    <h2>Leaving The Household</h2>
+                  
+
+                </div>
+                <div class="panel-group adminpro-custon-design" id="accordion2">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading accordion-head">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" data-parent="#accordion2" href="#collapse4">
+                                    Are you Leaving The Household?? <span class="pull-right"><i class="fa fa-angle-up"></i></span>
+                                </a>
+                            </h4>
+                        </div>
+                        <div id="collapse4" class="panel-collapse panel-ic collapse in">
+                            <div class="panel-body admin-panel-content animated flash">
+                                <p>Being Head Of Household</p>
+                                <p id="message">@Html.Raw(TempData["Message"])</p>
+                                <p>You can Leave this household only when you apoint any one member of your house as a Head of Household.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading accordion-head">
+                            <h4 class="panel-title">
+                                <a class="Warning Warning-color mg-b-10" href="#" data-toggle="modal" data-target="#WarningModalhdbgcl">Apoint New Household Head</a>
+                            </h4>
+                        </div>
+                
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading accordion-head">
+                            <h4 class="panel-title">
+                                <a href="@Url.Action("Dashboard", "Home")">
+                                     Go to DashBoard
+                                </a>
+                            </h4>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="WarningModalhdbgcl" class="modal modal-adminpro-general Customwidth-popup-WarningModal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header header-color-modal bg-color-3">
+                    <h4 class="modal-title">Apoint New Head Of Household</h4>
+                    <div class="modal-close-area modal-close-df">
+                        <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <h5>Select a single person from the List of members of your household and apoint as a new Head of Household.</h5>
+                     <h6> <span><i class="fa fa-warning"></i></span>You cannot undo the changes that occurs!</h6>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            @using (Html.BeginForm(null, null, FormMethod.Post, new { style = "width:90%;" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <div class="form-group-inner">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                          <label class="login2 pull-right pull-right-pro"> Choose</label>
+
+                                        </div>
+                                        <div class="col-md-8">
+                                            @Html.DropDownList("newHoH", null,"----select---", new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+               
+                                <div class="row">
+                                    <div class="col-md-offset-5 col-md-2">
+                                        <div class="login-horizental cancel-wp pull-left">
+
+                                            <button class="btn btn-danger btn-block" type="submit">Apoint</button>
+
+                                        </div>
+                                    </div>
+                 
+                                </div>
+
+                            }
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a data-dismiss="modal" href="#">Cancel</a>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

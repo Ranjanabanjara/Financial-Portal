@@ -10,10 +10,14 @@ namespace Project_4.Helpers
     public class UserHelper
     {
         private static ApplicationDbContext db = new ApplicationDbContext();
-
+        private ApplicationDbContext dbTwo = new ApplicationDbContext();
         public static string GetAvatarPath()
         {
             return db.Users.Find(HttpContext.Current.User.Identity.GetUserId()).AvatarPath;
+        }
+        public string GetAvatarPathTwo()
+        {
+          return dbTwo.Users.Find(HttpContext.Current.User.Identity.GetUserId()).AvatarPath;
         }
         public static string GetUserEmail()
         {

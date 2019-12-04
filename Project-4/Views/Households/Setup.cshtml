@@ -1,4 +1,4 @@
-﻿@model Project_4.Models.Household
+﻿@model Project_4.Models.WizardViewModel
     @{ 
         Layout = null;
     }
@@ -29,7 +29,7 @@
     <div class="image-container set-full-height" style="background-color:deepskyblue">
 
         <!--   Big container   -->
-        <div class="container" style="padding:30px 30px 50px 30px">
+        <div class="container" style="padding:0px 30px 50px 30px">
             <div class="row">
                 <h4 class="text-center">
                     You have successfuly created a Household. Next step is to setup your household..
@@ -41,9 +41,12 @@
                     <div class="wizard-container" style="padding-top:0px">
 
                         <div class="card wizard-card" data-color="orange" id="wizardProfile">
-                            @using (Html.BeginForm("Setup", "Households", FormMethod.Post))
+                            @using (Html.BeginForm("Setup", "Households", FormMethod.Post, new{ @role = "form" }))
                             {
-                           
+                                @Html.AntiForgeryToken()
+                             
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
 
                                 <div class="wizard-header">
                                     <h3>
@@ -77,71 +80,124 @@
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="about">
                                         <h6 class="text-center">Create Bank Account</h6>
+
                                         <div class="row">
-                                            <div class="col-sm-offset-1 col-sm-10">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                            @Html.LabelFor(m => m.BankAccount.Name, "Account Name", new { @class = "login2 pull-right pull-right-pro" })
+
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                            @Html.EditorFor(model => model.BankAccount.Name, new { htmlAttributes = new { @class = "form-control", required = "true" } })
+                                                            @Html.ValidationMessageFor(model => model.BankAccount.Name, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+
 
                                                 <div class="form-group">
-                                                    <label for="exampleInput1" class="bmd-label-floating">Bank Account Name</label>
-                                                    <input type="text" class="form-control" id="exampleInput1" name="BankAccount" required>
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                            @Html.LabelFor(m => m.BankAccount.AccountType, new { @class = "login2 pull-right pull-right-pro" })
+
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                            @Html.EditorFor(model => model.BankAccount.AccountType, new { htmlAttributes = new { @class = "form-control", required = "true" } })
+                                                            @Html.ValidationMessageFor(model => model.BankAccount.AccountType, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                            @Html.LabelFor(m => m.BankAccount.StartingBalance, new { @class = "login2 pull-right pull-right-pro" })
+
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                            @Html.EditorFor(model => model.BankAccount.StartingBalance, new { htmlAttributes = new { @class = "form-control", required = "true" } })
+                                                            @Html.ValidationMessageFor(model => model.BankAccount.StartingBalance, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                            @Html.LabelFor(m => m.BankAccount.CurrentBalance, new { @class = "login2 pull-right pull-right-pro " })
+
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                            @Html.EditorFor(model => model.BankAccount.CurrentBalance, new { htmlAttributes = new { @class = "form-control", required = "true" } })
+                                                            @Html.ValidationMessageFor(model => model.BankAccount.CurrentBalance, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
                                                 </div>
 
 
 
-                                                <div class="form-group">
-                                                    <label for="exampleInput11" class="bmd-label-floating"></label>
-                                                    <select class="selectpicker" data-style="select-with-transition" title="Single Select" data-size="7">
-                                                        <option disabled selected>Select account type.</option>
-                                                        <option value="2">Checking</option>
-                                                        <option value="3">Savings</option>
-                                                    </select>
-                                                </div>
 
 
 
-                                                <div class="form-group">
-                                                    <label for="exampleInput1" class="bmd-label-floating">Starting Balance</label>
-                                                    <input type="number" min="1" step="any" class="form-control" id="exampleemalil" name="StartingBalance" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInput1" class="bmd-label-floating">Low Balance Alert Level</label>
-                                                    <input type="number" min="1" step="any" class="form-control" id="exampleemalil" name="LowBalanceLevel" required>
-                                                </div>
 
                                             </div>
-
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="account">
                                         <h6 class="text-center">
                                             Create budget category and estimate budget for the same.
                                         </h6>
+
                                         <div class="row">
-                                            <div class="col-sm-offset-1 col-sm-10">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                            @Html.LabelFor(m => m.Budget.Name, "Budget Category", new { @class = "login2 pull-right pull-right-pro" })
 
-                                                <div class="form-group">
-                                                    <label for="exampleInput1" class="bmd-label-floating">Budget Category</label>
-                                                    <input type="text" class="form-control" id="exampleemalil" name="Budget" required>
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                            @Html.EditorFor(model => model.Budget.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                                            @Html.ValidationMessageFor(model => model.Budget.Name, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="exampleInput1" class="bmd-label-floating">Target Amount</label>
-                                                    <input type="number" min="1" step="any" class="form-control" id="exampleemalil" name="Target" required>
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                            @Html.LabelFor(m => m.Budget.TargetAmount, new { @class = "login2 pull-right pull-right-pro" })
+
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                            @Html.EditorFor(model => model.Budget.TargetAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                                            @Html.ValidationMessageFor(model => model.Budget.TargetAmount, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
                                                 </div>
+
                                             </div>
-
                                         </div>
                                     </div>
+
                                     <div class="tab-pane" id="address">
                                         <h6 class="text-center">Create BudgetItem</h6>
                                         <div class="row">
-                                            <div class="col-sm-offset-1 col-sm-10">
+                                            <div class="col-lg-12">
                                                 <div class="form-group">
-                                                    <label for="exampleInput1" class="bmd-label-floating">Budget</label>
-                                                    <input type="text" class="form-control" id="exampleemalil" name="Budget" required>
+                                                    <div class="row">
+                                                        <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                                                            @Html.LabelFor(m => m.BudgetItem.Name, new { @class = "login2 pull-right pull-right-pro" })
+
+                                                        </div>
+                                                        <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
+                                                            @Html.EditorFor(model => model.BudgetItem.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                                            @Html.ValidationMessageFor(model => model.BudgetItem.Name, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
                                                 </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInput1" class="bmd-label-floating">Target Amount</label>
-                                                    <input type="number" min="1" step="any" class="form-control" id="exampleemalil" name="Target" required>
-                                                </div>
+
 
                                             </div>
 
@@ -149,9 +205,6 @@
                                     </div>
 
                                 </div>
-                                
-                            
-                               
 
                                 <div class="wizard-footer height-wizard">
                                     <div class="pull-left">
@@ -159,16 +212,16 @@
                                     </div>
                                     <div class="pull-right">
                                         <input type='button' class='btn btn-next btn-fill btn-warning btn-wd btn-sm' name='next' value='Next' />
-                                        <input type='button' class='btn btn-finish btn-fill btn-warning btn-wd btn-sm' name='finish' value='Finish'/>
+                                        <input type='submit' class='btn btn-finish btn-fill btn-warning btn-wd btn-sm' name='finish' value='Finish' />
 
                                     </div>
 
                                     <div class="clearfix"></div>
                                 </div>
 
-                          
-                             }
-                         </div>
+
+                            }
+                        </div>
                     </div> <!-- wizard container -->
                 </div>
             </div><!-- end row -->

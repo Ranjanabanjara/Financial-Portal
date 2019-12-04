@@ -54,7 +54,7 @@ namespace Project_4.Controllers
             if (ModelState.IsValid)
             {
                 budget.Created = DateTime.Now;
-                budget.Updated = DateTime.Now;
+               
                 db.Budgets.Add(budget);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -73,6 +73,7 @@ namespace Project_4.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Budget budget = db.Budgets.Find(id);
+            budget.Updated = DateTime.Now;
             if (budget == null)
             {
                 return HttpNotFound();

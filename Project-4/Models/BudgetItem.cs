@@ -18,7 +18,7 @@ namespace Project_4.Models
 
         public virtual Budget Budget { get; set; }
 
-        public ICollection<Transaction> Transactions { get; set; }
+        public virtual ICollection<Transaction> Transactions { get; set; }
         public BudgetItem()
         {
             Transactions = new HashSet<Transaction>();

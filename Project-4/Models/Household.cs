@@ -14,11 +14,11 @@ namespace Project_4.Models
 
         public DateTime Created { get; set; }
 
-        public ICollection <ApplicationUser> Owner { get; set; }
-        public ICollection<Budget> Budgets { get; set; }
-        public ICollection<Invitation> Invitations { get; set; }
-        public ICollection<BankAccount> BankAccounts { get; set; }
-        public ICollection<Notification> Notifications { get; set; }
+        public virtual ICollection <ApplicationUser> Owner { get; set; }
+        public virtual ICollection<Budget> Budgets { get; set; }
+        public virtual ICollection<Invitation> Invitations { get; set; }
+        public virtual ICollection<BankAccount> BankAccounts { get; set; }
+        public virtual ICollection<Notification> Notifications { get; set; }
 
         public Household()
         {

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Project_4.Models;
 
 namespace Project_4.Controllers
@@ -49,10 +50,30 @@ namespace Project_4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,HouseholdId,AccountType,OwnerId,Name,StartingBalance,CurrentBalance")] BankAccount bankAccount)
+        //public ActionResult Create([Bind(Include = "Id,HouseholdId,AccountType,OwnerId,Name,StartingBalance,CurrentBalance")] BankAccount bankAccount)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        bankAccount.Created = DateTime.Now;
+        //        db.BankAccounts.Add(bankAccount);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    ViewBag.HouseholdId = new SelectList(db.Households, "Id", "Name", bankAccount.HouseholdId);
+        //    ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", bankAccount.OwnerId);
+        //    return View(bankAccount);
+        //}
+        public ActionResult Create([Bind(Include = "Id,houseId,AccountType,BankAccountOwnerId,BankName,StartingBalance,CurrentBalance")] BankAccount bankAccount, string BankName, int houseId)
         {
             if (ModelState.IsValid)
             {
+                var userId = User.Identity.GetUserId();               
+                bankAccount.HouseholdId = houseId;
+                bankAccount.OwnerId = userId;
+                bankAccount.Name = BankName;
+               
+
                 bankAccount.Created = DateTime.Now;
                 db.BankAccounts.Add(bankAccount);
                 db.SaveChanges();

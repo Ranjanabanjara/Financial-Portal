@@ -20,7 +20,7 @@
 .login{
 	background:#fff;
 	box-shadow: 0 0 20px rgba(0,0,0,.3);
-	padding:20px;
+	padding:40px;
 }
 .login-input-area input[type="email"], .login-input-area input[type="password"], .login-input-area input[type="text"]{
 	width:100%;

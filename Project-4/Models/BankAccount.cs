@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using static Project_4.Enumerations.AccountType;
 
 namespace Project_4.Models
 {
@@ -9,15 +10,17 @@ namespace Project_4.Models
     {
         public int Id { get; set; }
         public int HouseholdId { get; set; }
-        public string AccountType { get; set; }
+        public AccType  AccountType { get; set; }
         public string OwnerId { get; set; }
         public string Name { get; set; }
        
         public double StartingBalance { get; set; }
-        public double CurrentBalance { get; set; }       
+        public double CurrentBalance { get; set; }
+        public double LowBalanceThreshold { get; set; }
         public DateTime Created { get; set; }
 
         public virtual Household Household { get; set; }
+     
         public virtual ApplicationUser Owner { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
        

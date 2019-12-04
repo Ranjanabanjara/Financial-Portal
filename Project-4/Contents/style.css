@@ -1,3 +1,49 @@
+/*-----------------------------------------------------------------------------------
+
+    Template Name: Adminpro Admin Template
+    Template URI: http://SRTtheme.com/
+    Description: Adminpro is a responsive admin template based on the famous Bootstrap framework, made it with love in every backend, with tons of beautiful features ready to use.
+    Author: SRTtheme
+    Author URI: http://SRTtheme.com/
+    Version: 1.0
+
+-----------------------------------------------------------------------------------
+    
+    CSS INDEX
+    ===================
+	
+    1. Theme Default CSS (body, link color, section etc)
+	2. Header Customize CSS
+	3. Header top Menu CSS
+	4. Main Menu CSS
+	5. Tinymce CSS
+	6. Breadcome CSS
+
+-----------------------------------------------------------------------------------*/
+
+/*----------------------------------------*/
+/*  1.  Theme default CSS
+/*----------------------------------------*/
+
+.fs1{
+    font-size: 24px;
+   font-family:'Comic Sans MS';
+    color: #eb42be;
+    font-weight:500;
+    padding: 10px;
+
+}
+.pt{
+    padding-top: 2em;
+}
+
+dd {
+    padding-bottom: 10px;
+    color: black;
+    font-size: 14px;
+}
+
+
 
 
 
@@ -23,17 +69,6 @@ a:hover {
 a:active, a:hover, a:focus {
   outline: 0 none;
   text-decoration:none;
-}
-.textsmall {
-    font-size: 16px;
- 
-}
-.fontstyle1{
-    font-size: 24px;
-    color: #f019c4;
-    padding:5px;
-    font-weight:600;
-
 }
 ul{
 list-style: outside none none;
@@ -169,11 +204,9 @@ padding: 0
 /*----------------------------------------*/
 .admin-logo{
 	padding:10px 0px;
- 
 }
 .header-top-area{
-	background-color:#303030;
-  
+	background:#303030;
 }
 .header-top-menu ul.header-top-nav li{
 	display:inline-block;
@@ -613,15 +646,10 @@ ul.setting-panel-list li{
 .custom-menu-content ul.main-menu-dropdown{
 	position:relative;
 	z-index:99;
-   
 }
 .custom-menu-content ul.main-menu-dropdown li{
 	display:inline-block;
-    width:100%;
-    background-color:#03a9f4;
-
 }
-
 .custom-menu-content ul.main-menu-dropdown li a{
 	padding:20px 20px;
 	display:block;
@@ -683,15 +711,13 @@ ul.setting-panel-list li{
 	padding:10px 0px;
 }
 .header-top-area{
-	
-    background-color: #0f2032;
+	background:#303030;
 	
 }
 .header-top-menu ul.header-top-nav{
 	text-align:right;
 }
-.header-top-menu ul.header-top-nav 
-{
+.header-top-menu ul.header-top-nav li{
 	display:inline-block;
 	position:relative;
 }
@@ -784,14 +810,6 @@ ul.setting-panel-list li{
 	color:#303030;
 	font-size:20px;
 }
-.style {
-    color: #2485ce;
-    font-size: 35px;
-}
-.bc {
-    
-    background-color:black;
-}
 .breadcome-list{
 	padding:20px;
 	background:#fff;
@@ -817,7 +835,7 @@ ul.breadcome-menu li a:hover{
 /*----------------------------------------*/
 .sparkline-hd, .smart-sparkline-hd, .sparkline7-hd, .sparkline8-hd, .sparkline9-hd, .sparkline10-hd, .sparkline11-hd, .sparkline12-hd, .sparkline13-hd, .sparkline14-hd, .sparkline15-hd, .sparkline16-hd{
 	padding: 15px 20px;
-    background: #57a450;
+    background: #25ac56;
 	border-bottom:1px solid #ccc;
 }
 .main-spark-hd, .smart-main-spark-hd, .main-spark7-hd, .main-sparkline8-hd, .main-sparkline9-hd, .main-sparkline10-hd, .main-sparkline11-hd, .main-sparkline12-hd, .main-sparkline13-hd, .main-sparkline14-hd, .main-sparkline15-hd, .main-sparkline16-hd{
@@ -1424,7 +1442,7 @@ ul.comment-action-st li a{
 .daily-feed-img{
 	float: left;
     margin-right: 10px;
-    width: 20%;
+    width: 60px ;
 }
 .daily-feed-img img{
 	border-radius:50%;
@@ -2035,7 +2053,7 @@ li.multipleInput-email {
 .author-per-img img{
 	border-radius:50%;
 	float:left;
-	height:70px;
+	height:20px;
 }
 .author-per-content {
     margin-left: 85px;

@@ -17,9 +17,25 @@ namespace Project_4.Models
 
     public class WizardViewModel
     {
-        public BankAccount BankAccount = new BankAccount();
-        public Budget Budget = new Budget();
-        public BudgetItem BudgetItem = new BudgetItem();
+        public BankAccount BankAccount { get; set; }
+        public Budget Budget { get; set; }
+        public BudgetItem BudgetItem { get; set; }
+
+        public WizardViewModel()
+        {
+            BankAccount = new BankAccount();
+            Budget = new Budget();
+            BudgetItem = new BudgetItem();
+        }
+
+    }
+
+    public class AcceptInvitationViewModel : RegisterViewModel
+    {
+        public int Id { get; set; }
+        public Guid Code { get; set; }
+        public int HouseholdId { get; set; }
+      
 
     }
 }

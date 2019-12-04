@@ -1,6 +1,10 @@
 ﻿@using Project_4.Models;
 @using Project_4.Helpers;  
-
+@{ 
+    RoleHelper roleHelper = new RoleHelper();
+    UserHelper userHelper = new UserHelper();
+    HouseholdHelper householdHelper = new HouseholdHelper();
+}
 
 <!doctype html>
 <html class="no-js" lang="en">
@@ -17,6 +21,7 @@
     <!-- Google Fonts
         ============================================ -->
     <link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i,800" rel="stylesheet">
+    <link href="//cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
     <!-- Bootstrap CSS
         ============================================ -->
 
@@ -38,8 +43,10 @@
     <link href="~/Contents/animate.css" rel="stylesheet" />
     <!-- normalize CSS
         ============================================ -->
-
+    <link href="~/Contents/modals.css" rel="stylesheet" />
     <link href="~/Contents/normalize.css" rel="stylesheet" />
+    <link href="~/Contents/accordions.css" rel="stylesheet" />
+
     <!-- charts CSS
         ============================================ -->
 
@@ -61,23 +68,23 @@
     <div class="header-top-area">
         <div class="container">
             <div class="row">
-                <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="admin-logo">
                         <a href="#">
                             <img src="~/Images/pig2.png" class="img-circle" width="40" alt="" />
-                            <span class="h5">𝖋𝖎𝖓𝖆𝖓𝖈𝖎𝖆𝖑 𝖕𝖔𝖗𝖙𝖆𝖑</span>
+                            <span class="h4">𝖋𝖎𝖓𝖆𝖓𝖈𝖎𝖆𝖑 𝖕𝖔𝖗𝖙𝖆𝖑</span>
                         </a>
                     </div>
                 </div>
 
-                <div class="col-lg-7 col-md-5 col-sm-0 col-xs-12">
+                <div class="col-lg-6 col-md-5 col-sm-0 col-xs-12">
                     <div class="header-top-menu">
                         <ul class="nav navbar-nav mai-top-nav">
                             <li class="nav-item">
-                                <a href="@Url.Action("Dashboard","Home")" class="nav-link">Dashboard</a>
+                                <a href="@Url.Action("Dashboard", "Home")" class="nav-link">Dashboard</a>
                             </li>
-                           
-                          
+
+
                             <li class="nav-item dropdown">
                                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">My Household<span class="angle-down-topmenu"><i class="fa fa-angle-down"></i></span></a>
                                 <div role="menu" class="dropdown-menu animated flipInX">
@@ -125,10 +132,24 @@
                             <li class="nav-item textsmall">
                                 <a href="#" data-toggle="dropdown">
 
-                                    <img src="@UserHelper.GetAvatarPath()" width="20" class="img-circle" />  <span class="textsmall">@UserHelper.GetUserFirstName()</span>  <span><i class="fa fa-angle-down"></i></span>
+                                    <img src="@userHelper.GetAvatarPathTwo()" width="30" class="img-circle" />  <span style="font-size:12px">@UserHelper.GetUserFirstName()</span> <span><i class="fa fa-angle-down"></i></span>
 
                                 </a>
                                 <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated flipInX">
+                                    @if (User.IsInRole("HouseholdHead") || User.IsInRole("Member"))
+                                    {
+                                        <li>
+                                            <a href="#"><i class="fa fa-location-arrow"></i> <span>@roleHelper.ListUserRoles(UserHelper.GetUserId().Id).ToList()[0]</span></a>
+                                        </li>
+
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <a href="#"><i class="fa fa-location-arrow"></i> <span>Guest</span></a>
+                                        </li>
+
+                                    }
                                     <li>
                                         <a href="#"><i class="fa fa-location-arrow"></i> <span>@UserHelper.GetUserEmail()</span></a>
                                     </li>
@@ -139,6 +160,17 @@
                                     <li>
                                         <a href="@Url.Action("CustomLogOff", "Account")"><i class="fa fa-hand-o-right"></i> <span>Log Out</span></a>
                                     </li>
+                                    @if (User.IsInRole("Admin") || User.IsInRole("HouseholdHead") || User.IsInRole("Member"))
+                                    {
+                                        <li>
+                                            <a class="Alert Alert-color" href="#" data-toggle="modal" data-target="#AlertModalftblack"><i class="fa fa-hand-o-right"></i> <span>Leave Household</span></a>
+
+                                        </li>
+
+
+                                    }
+
+
 
 
                                 </ul>
@@ -150,11 +182,9 @@
                                 <div role="menu" class="admintab-wrap menu-setting-wrap menu-setting-wrap-bg dropdown-menu animated flipInX">
                                     <ul class="nav nav-tabs custon-set-tab">
                                         <li class="active">
-                                            <a data-toggle="tab" href="#Projects">Households</a>
+                                            <a data-toggle="tab" href="#Members">Members In House</a>
                                         </li>
-                                        <li>
-                                            <a data-toggle="tab" href="#Notes">Notes</a>
-                                        </li>
+
 
                                         <li>
                                             <a data-toggle="tab" href="#Settings">Settings</a>
@@ -162,6 +192,42 @@
                                     </ul>
 
                                     <div class="tab-content">
+                                        <div id="Members" class="tab-pane fade in active">
+                                            <div class="notes-area-wrap">
+                                                <div class="note-heading-indicate">
+                                                    <h2><i class="fa fa-users"></i> All members</h2>
+                                                    <p>You have  members in this house.</p>
+                                                </div>
+                                                <div class="notes-list-area notes-menu-scrollbar">
+
+                                                    @*<ul class="notes-menu-list">
+                                                            @foreach (var user in db.Users)
+                                                            {
+                                                                <li>
+                                                                    <a href="#">
+                                                                        <div class="notes-list-flow">
+                                                                            <div class="notes-img">
+                                                                                <img src="@user.AvatarPath" alt="" />
+                                                                            </div>
+                                                                            <div class="notes-content">
+                                                                                <p>@user.FirstName , @user.LastName</p>
+                                                                                <span>@user.Email</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </a>
+                                                                </li>
+
+                                                            }
+
+
+
+
+
+
+                                                        </ul>*@
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div id="Projects" class="tab-pane fade">
                                             <div class="projects-settings-wrap">
                                                 <div class="note-heading-indicate">
@@ -205,54 +271,69 @@
             </div>
         </div>
     </div>
-    <!-- Header top area end-->
-   
-
-    <!-- Main Menu area start-->
-@*<div class="main-menu-area mg-tb-40">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="nav nav-tabs custom-menu-wrap">
-                        <li class="active">
-                            <a data-toggle="tab" href="#Home"><h5><i class="fa fa-home"></i></h5></a>
-                        </li>
-                        <li>
-                            <a data-toggle="tab" href="#Household">Household</a>
-                        </li>
-
-
-                    </ul>
-                    <div class="tab-content custom-menu-content">
-                        <div id="Home" class="tab-pane in active tab-custon-menu-bg animated flipInX">
-                            <ul class="main-menu-dropdown">
-
-                               <li>
-                                   <h2 class="fontstyle1">Welcome To The Lobby of Financial Portal</h2>
-                               </li>
-                            </ul>
-                        </div>
-                        <div id="Household" class="tab-pane tab-custon-menu-bg animated flipInX">
-                            <ul class="main-menu-dropdown">
-                               
-                                <li>
-                                    <a href="@Url.Action("Create","Households")">Create Household</a>
-                                </li>
-                                <li>
-                                    <a href="#">Join Household</a>
-                                </li>
-                             
-
-                            </ul>
-                        </div>
-
-                    </div>
+    <div id="AlertModalftblack" class="modal modal-adminpro-general FullColor-popup-AlertModal PrimaryModal-bgcolor fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-close-area modal-close-df">
+                    <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                </div>
+                <div class="modal-body">
+                    <span class="dminpro-warning modal-check-pro information-icon-pro"></span>
+                    <h2>Are you sure to Leave this Household??</h2>
+                    <p><span><i class=" fa fa-warning"></i></span>You cannot undo the changes once they occur!</p>
+                </div>
+                <div class="modal-footer footer-modal-admin">
+                    <a data-dismiss="modal" href="#">Cancel</a>
+                    <a href="@Url.Action("LeaveHousehold", "Households")">Process</a>
                 </div>
             </div>
         </div>
-    </div>*@
-<!-- Main Menu area End-->
+    </div>
+    <!-- Header top area end-->
+    <!-- Main Menu area start-->
+    @*<div class="main-menu-area mg-tb-40">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="nav nav-tabs custom-menu-wrap">
+                            <li class="active">
+                                <a data-toggle="tab" href="#Home"><h5><i class="fa fa-home"></i></h5></a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" href="#Household">Household</a>
+                            </li>
 
+
+                        </ul>
+                        <div class="tab-content custom-menu-content">
+                            <div id="Home" class="tab-pane in active tab-custon-menu-bg animated flipInX">
+                                <ul class="main-menu-dropdown">
+
+                                   <li>
+                                       <h2 class="fontstyle1">Welcome To The Lobby of Financial Portal</h2>
+                                   </li>
+                                </ul>
+                            </div>
+                            <div id="Household" class="tab-pane tab-custon-menu-bg animated flipInX">
+                                <ul class="main-menu-dropdown">
+
+                                    <li>
+                                        <a href="@Url.Action("Create","Households")">Create Household</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Join Household</a>
+                                    </li>
+
+
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    <!-- Main Menu area End-->
     <!-- Mobile Menu start -->
     <div class="mobile-menu-area">
         <div class="container">
@@ -357,11 +438,27 @@
         ============================================ -->
 
     <script src="~/Scripts/jquery.scrollUp.min.js"></script>
-
+    <script src="~/Scripts/modal-active.js"></script>
     <!-- main JS
         ============================================ -->
 
     <script src="~/Scripts/main.js"></script>
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script>
+        
+        $(document).ready(function () {
+            $('#dataTable').DataTable(
+                {
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'excel', 'pdf', 'print'
+                    ],
+                    pageLength: 10,
+                    "scrollX": true
+                });
+        });
+    </script>
+
 
     @RenderSection("Scripts", required: false)
 </body>

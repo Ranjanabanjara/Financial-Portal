@@ -19,7 +19,8 @@ namespace Project_4.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-
+        private ApplicationDbContext db = new ApplicationDbContext();
+        private RoleHelper roleHelper = new RoleHelper();
         public AccountController()
         {
         }
@@ -93,6 +94,77 @@ namespace Project_4.Controllers
             }
         }
 
+        [AllowAnonymous]
+        public ActionResult AcceptInvitation(string receipentEmail, string code)
+        {
+            var realGuid = Guid.Parse(code);
+            var invitation = db.Invitations.FirstOrDefault(i => i.ReceipentEmail == receipentEmail && i.Code == realGuid);
+            if (invitation == null)
+                return View("NotFoundError", invitation);
+            var expirationDate = invitation.Created.AddDays(invitation.TTL);
+            if(invitation.IsValid && DateTime.Now < expirationDate)
+            {
+                var housholdName = db.Households.Find(invitation.HouseholdId).Name;
+                ViewBag.Greeting = $"Thankyou for accepting inviatation to join {housholdName}";
+                var invitationVm = new AcceptInvitationViewModel
+                {
+                    Id = invitation.Id,
+                    Email = receipentEmail,
+                    Code = realGuid,
+                    HouseholdId = invitation.HouseholdId
+
+
+                };
+                return View(invitationVm);
+
+            }
+            //return RedirectToAction("InvitationExpired");
+            ViewBag.Error = "Your invitation expired. Please request another invitation to this house.";
+            return View("InvitationExpired", invitation);
+        }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AcceptInvitation(AcceptInvitationViewModel invitationVm)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+
+                    FirstName = invitationVm.FirstName,
+                    LastName = invitationVm.LastName,
+                    DisplayName = invitationVm.DisplayName,
+                    Email = invitationVm.Email,
+                    UserName = invitationVm.Email,
+                    HouseholdId = invitationVm.HouseholdId,
+                    AvatarPath = "/Images/default.jpg"
+
+                };
+
+                var result = await UserManager.CreateAsync(user, invitationVm.Password);
+                if (result.Succeeded)
+                {
+                    var sentInvitation = db.Invitations.Find(invitationVm.Id);
+                    sentInvitation.IsValid = false;
+                    db.SaveChanges();
+                   
+                    roleHelper.AddUserToRole(user.Id, "Member");
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                    return RedirectToAction("Dashboard", "Home");
+
+
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(invitationVm);
+        }
+
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
@@ -143,14 +215,17 @@ namespace Project_4.Controllers
         {
             return View();
         }
-        [AllowAnonymous]
-        public ActionResult NewRegister()
-        {
 
+        [AllowAnonymous]
+        public ActionResult InvitationExpired()
+        {
+            
+            ViewBag.Error = "Your invitation expired. Please request another invitation to this house.";
+           
             return View();
         }
 
-        //        // POST: /Account/Register
+        // POST: /Account/Register
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -187,6 +262,7 @@ namespace Project_4.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     return RedirectToAction("Lobby", "Home");
 
@@ -483,6 +559,7 @@ namespace Project_4.Controllers
             {
                 return Redirect(returnUrl);
             }
+           
             return RedirectToAction("Index", "Households");
         }
 
