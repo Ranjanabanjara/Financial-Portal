@@ -89,7 +89,7 @@ namespace Project_4.Models
         public System.Data.Entity.DbSet<Project_4.Models.Notification> Notifications { get; set; }
 
         public System.Data.Entity.DbSet<Project_4.Models.Transaction> Transactions { get; set; }
-
         
+
     }
 }

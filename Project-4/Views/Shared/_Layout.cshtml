@@ -1,6 +1,7 @@
 ﻿@using Project_4.Models;
 @using Project_4.Helpers;  
 @{ 
+   
     RoleHelper roleHelper = new RoleHelper();
     UserHelper userHelper = new UserHelper();
     HouseholdHelper householdHelper = new HouseholdHelper();
@@ -81,7 +82,7 @@
                     <div class="header-top-menu">
                         <ul class="nav navbar-nav mai-top-nav">
                             <li class="nav-item">
-                                <a href="@Url.Action("Dashboard", "Home")" class="nav-link">Dashboard</a>
+                                <a href="@Url.Action("Dashboard", "Households")" class="nav-link">Dashboard</a>
                             </li>
 
 
@@ -89,8 +90,8 @@
                                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">My Household<span class="angle-down-topmenu"><i class="fa fa-angle-down"></i></span></a>
                                 <div role="menu" class="dropdown-menu animated flipInX">
                                     <a href="@Url.Action("Create", "Invitations")" class="dropdown-item">Invite Member</a>
-                                    <a href="@Url.Action("Edit", "Households")" class="dropdown-item">Settings</a>
-                                    <a href="@Url.Action("Create", "Invitations")" class="dropdown-item">Add Transaction</a>
+                                    <a href="" class="dropdown-item">Settings</a>
+                                    <a href="@Url.Action("Create", "Transactions")" class="dropdown-item">Add Transaction</a>
                                 </div>
                             </li>
 

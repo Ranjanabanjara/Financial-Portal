@@ -20,7 +20,7 @@ namespace Project_4.Controllers
         private RoleHelper roleHelper = new RoleHelper();
 
         // GET: Households
-        public ActionResult Index()
+        public ActionResult Dashboard()
         {
             return View(db.Households.ToList());
         }

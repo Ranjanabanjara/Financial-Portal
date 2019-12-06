@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Project_4.Models.Household>
+
+
+
+<!-- Main Menu area start-->
+<div class="main-menu-area mg-tb-40">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="nav nav-tabs custom-menu-wrap">
+                    <li class="active">
+                        <a data-toggle="tab" href="#home"><i class="fa fa-home"></i></a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#member">Members</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#bankAccount">BankAccounts</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#budgetItem">BudgetItems</a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#budget">Budgets</a>
+                    </li>
+
+                </ul>
+                <div class="tab-content custom-menu-content">
+                    <div id="home" class="tab-pane in active tab-custon-menu-bg animated flipInX">
+                        <ul class="main-menu-dropdown">
+                            @foreach (var item in Model)
+                            {
+                                <li>
+                                    <a href="@Url.Action("Details", "Households", new { id = item.Id})"> Get Inside @Html.DisplayFor(modelItem => item.Name)</a>
+                                   
+                                </li>
+                            }
+
+                            </ul>
+                    </div>
+                    <div id="member" class="tab-pane tab-custon-menu-bg animated flipInX">
+                        <ul class="main-menu-dropdown">
+                            <li>
+                                <a href="@Url.Action("Create", "Invitations")">Invite Member</a>
+
+                            </li>
+                            <li>
+                                <a href="#">Remove Member</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div id="bankAccount" class="tab-pane tab-custon-menu-bg animated flipInX">
+                        <ul class="main-menu-dropdown">
+                            <li>
+                                <a href="@Url.Action("Index", "BankAccounts")">MyAccounts</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Create","BankAccounts")">Create New Account</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Index","Transactions")">My Transactions</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div id="budgetItem" class="tab-pane tab-custon-menu-bg animated flipInX">
+                        <ul class="main-menu-dropdown">
+                            <li>
+                                <a href="@Url.Action("Index", "BudgetItems")">All Categories</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Create", "BudgetItems")">Add New Category</a>
+                            </li>
+
+
+                        </ul>
+                    </div>
+                    <div id="budget" class="tab-pane tab-custon-menu-bg animated flipInX">
+                        <ul class="main-menu-dropdown">
+
+                            <li>
+                                <a href="@Url.Action("Index", "Budgets")">My Budget</a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Menu area End-->
