@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Project_4.Extensions;
+using Project_4.Helpers;
 using Project_4.Models;
 
 namespace Project_4.Controllers
@@ -14,12 +16,18 @@ namespace Project_4.Controllers
     public class TransactionsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private HouseholdHelper householdHelper = new HouseholdHelper();
 
         // GET: Transactions
         public ActionResult Index()
         {
-            var transactions = db.Transactions.Include(t => t.BankAccount).Include(t => t.BudgetItem).Include(t => t.Owner);
-            return View(transactions.ToList());
+            return View(householdHelper.ListMyTransactions());
+
+        }
+        public ActionResult AllTransactions()
+        {
+            return View(householdHelper.ListHouseholdTransactions());
+           
         }
 
         // GET: Transactions/Details/5
@@ -40,7 +48,7 @@ namespace Project_4.Controllers
         // GET: Transactions/Create
         public ActionResult Create()
         {
-
+            var houseId = db.Users.Find(User.Identity.GetUserId()).HouseholdId ?? 0;
             ViewBag.BankAccountId = new SelectList(db.BankAccounts, "Id", "Name");
             ViewBag.BudgetItemId = new SelectList(db.BudgetItems, "Id", "Name");
            
@@ -60,7 +68,10 @@ namespace Project_4.Controllers
                 transaction.OwnerId = User.Identity.GetUserId();
                 db.Transactions.Add(transaction);
                 db.SaveChanges();
+                transaction.UpdateBalances();
+                transaction.ManageNotifications();
                 return RedirectToAction("Index");
+               
             }
 
             ViewBag.BankAccountId = new SelectList(db.BankAccounts, "Id", "Name", transaction.BankAccountId);

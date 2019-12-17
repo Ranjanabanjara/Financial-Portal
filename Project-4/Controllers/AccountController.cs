@@ -155,7 +155,7 @@ namespace Project_4.Controllers
                     roleHelper.AddUserToRole(user.Id, "Member");
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    return RedirectToAction("Dashboard", "Home");
+                    return RedirectToAction("Dashboard", "Households");
 
 
                 }

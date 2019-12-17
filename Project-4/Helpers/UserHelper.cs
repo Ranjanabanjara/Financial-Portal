@@ -19,6 +19,10 @@ namespace Project_4.Helpers
         {
           return dbTwo.Users.Find(HttpContext.Current.User.Identity.GetUserId()).AvatarPath;
         }
+        public string GetUserFirstNameTwo()
+        {
+            return dbTwo.Users.Find(HttpContext.Current.User.Identity.GetUserId()).FirstName;
+        }
         public static string GetUserEmail()
         {
             return db.Users.Find(HttpContext.Current.User.Identity.GetUserId()).UserName;

@@ -74,12 +74,20 @@ namespace Project_4.Controllers
                 db.SaveChanges();
 
                 await invitation.EmailInvitation();
-                return RedirectToAction("Dashboard", "Home");
+                return RedirectToAction("Dashboard", "Households");
             }
 
         
             return View(invitation);
         }
+
+        //remove member
+        [Authorize(Roles = "HouseholdHead")]
+        public ActionResult RemoveMember()
+        {      
+            return View();
+        }
+
 
         // GET: Invitations/Edit/5
         public ActionResult Edit(int? id)

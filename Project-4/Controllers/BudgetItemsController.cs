@@ -39,7 +39,7 @@ namespace Project_4.Controllers
         // GET: BudgetItems/Create
         public ActionResult Create()
         {
-            ViewBag.BudgetId = new SelectList(db.Budgets, "Id", "OwnerId");
+            ViewBag.BudgetId = new SelectList(db.Budgets, "Id", "Name");
             return View();
         }
 
@@ -54,13 +54,13 @@ namespace Project_4.Controllers
             if (ModelState.IsValid)
             {
                 budgetItem.Created = DateTime.Now;
-              
+                budgetItem.CurrentAmount = budgetItem.TargetAmount;
                 db.BudgetItems.Add(budgetItem);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.BudgetId = new SelectList(db.Budgets, "Id", "OwnerId", budgetItem.BudgetId);
+            ViewBag.BudgetId = new SelectList(db.Budgets, "Id", "OwnerId", budgetItem.Budget.Name);
             return View(budgetItem);
         }
 

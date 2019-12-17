@@ -19,6 +19,7 @@ namespace Project_4.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
         private RoleHelper roleHelper = new RoleHelper();
 
+
         // GET: Households
         public ActionResult Dashboard()
         {
@@ -47,6 +48,7 @@ namespace Project_4.Controllers
                 //Add and save Budget
                 model.Budget.Created = DateTime.Now;
                 model.Budget.HouseholdId = (int)user.HouseholdId;
+                model.Budget.OwnerId = User.Identity.GetUserId();
                 db.Budgets.Add(model.Budget);
                 db.SaveChanges();
 
@@ -82,7 +84,7 @@ namespace Project_4.Controllers
                     roleHelper.RemoveUserFromRole(userId, "HouseholdHead");
                     await ControllerContext.HttpContext.RefreshAuthentication(user);
 
-                    return RedirectToAction("Dashboard", "Home");
+                    return RedirectToAction("Lobby", "Home");
 
                 case "Member":
                 default:
@@ -90,7 +92,7 @@ namespace Project_4.Controllers
                     db.SaveChanges();
                     roleHelper.RemoveUserFromRole(userId, "Member");
                     await ControllerContext.HttpContext.RefreshAuthentication(user);
-                    return RedirectToAction("Dashboard", "Home");
+                    return RedirectToAction("Lobby", "Home");
 
             }
            
@@ -101,7 +103,7 @@ namespace Project_4.Controllers
             var userId = User.Identity.GetUserId();
             var myHouseholdId = db.Users.Find(userId).HouseholdId ?? 0;
             if (myHouseholdId == 0)
-                return RedirectToAction("Dashboard", "Home");
+                return RedirectToAction("Lobby", "Home");
             var members = db.Users.Where(u => u.HouseholdId == myHouseholdId && u.Id != userId);
             ViewBag.newHOH = new SelectList(members, "Id", "FullName");
             
@@ -127,10 +129,15 @@ namespace Project_4.Controllers
                 roleHelper.AddUserToRole(newHOH, "HouseholdHead");
             return RedirectToAction("Dashboard", "Home");
         }
+
+        public ActionResult RemoveMember()
+        {
         
 
-           
-        
+            return View();
+        }
+
+
         // GET: Households/Details/5
         public ActionResult Details(int? id)
         {
@@ -150,8 +157,16 @@ namespace Project_4.Controllers
         // GET: Households/Create
         public ActionResult Create()
         {
+            var userId = User.Identity.GetUserId();
+            var user = db.Users.Find(userId);
+            var userRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
+            if (user.HouseholdId != null)
+            {
+                ViewBag.Message = "You already have the house";
+                return RedirectToAction("Dashboard", "Households");
 
-           
+            }
+
             return View();
         }
 
@@ -166,31 +181,15 @@ namespace Project_4.Controllers
         
             if (ModelState.IsValid)
             {
-                var userId = User.Identity.GetUserId();
-                var user = db.Users.Find(userId);
-                var userRole = roleHelper.ListUserRoles(userId).FirstOrDefault();
-                if (user.HouseholdId != null)
+                var userId = User.Identity.GetUserId();              
+                var userRole = roleHelper.ListUserRoles(userId).FirstOrDefault();             
+                if (string.IsNullOrEmpty(userRole))
                 {
-                    ViewBag.Message = "You already have the house";
-                    return RedirectToAction("Dashboard", "Home");
+                    roleHelper.AddUserToRole(userId, "HouseholdHead");
 
                 }
-                else
-                {
-                    if (userRole != null)
-                    {
-                        roleHelper.RemoveUserFromRole(userId, userRole);
-                    }
-                    if (string.IsNullOrEmpty(userRole))
-                    {
-                        roleHelper.AddUserToRole(userId, "HouseholdHead");
 
-                    }
-
-                }
-              
                 household.Created = DateTime.Now;
-
                 db.Households.Add(household);
                 db.Users.Find(userId).HouseholdId = household.Id;
                 db.SaveChanges();

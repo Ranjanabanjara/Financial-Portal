@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Project_4.Helpers;
 using Project_4.Models;
 
 namespace Project_4.Controllers
@@ -14,12 +15,11 @@ namespace Project_4.Controllers
     public class BankAccountsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
+        private HouseholdHelper householdHelper = new HouseholdHelper();
         // GET: BankAccounts
         public ActionResult Index()
-        {
-            var bankAccounts = db.BankAccounts.Include(b => b.Household).Include(b => b.Owner);
-            return View(bankAccounts.ToList());
+        {            
+            return View(householdHelper.ListMyBanks());
         }
 
         // GET: BankAccounts/Details/5
@@ -50,10 +50,35 @@ namespace Project_4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "Id,HouseholdId,AccountType,OwnerId,Name,StartingBalance,CurrentBalance")] BankAccount bankAccount)
+        public ActionResult Create([Bind(Include = "Id,HouseholdId,AccountType,OwnerId,Name,StartingBalance,CurrentBalance,LowBalanceThreshold")] BankAccount bankAccount)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = User.Identity.GetUserId();
+                var user = db.Users.Find(userId);
+                bankAccount.Created = DateTime.Now;
+                bankAccount.HouseholdId = (int)user.HouseholdId;
+                bankAccount.OwnerId = userId;
+                bankAccount.CurrentBalance = bankAccount.StartingBalance;
+                db.BankAccounts.Add(bankAccount);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.HouseholdId = new SelectList(db.Households, "Id", "Name", bankAccount.HouseholdId);
+            ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", bankAccount.OwnerId);
+            return View(bankAccount);
+        }
+        //public ActionResult Create([Bind(Include = "Id,AccountType,BankAccountOwnerId,BankName,StartingBalance,CurrentBalance")] BankAccount bankAccount, string BankName, int houseId)
         //{
         //    if (ModelState.IsValid)
         //    {
+        //        var userId = User.Identity.GetUserId();               
+        //        bankAccount.HouseholdId = houseId;
+        //        bankAccount.OwnerId = userId;
+        //        bankAccount.Name = BankName;
+
+
         //        bankAccount.Created = DateTime.Now;
         //        db.BankAccounts.Add(bankAccount);
         //        db.SaveChanges();
@@ -64,26 +89,6 @@ namespace Project_4.Controllers
         //    ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", bankAccount.OwnerId);
         //    return View(bankAccount);
         //}
-        public ActionResult Create([Bind(Include = "Id,houseId,AccountType,BankAccountOwnerId,BankName,StartingBalance,CurrentBalance")] BankAccount bankAccount, string BankName, int houseId)
-        {
-            if (ModelState.IsValid)
-            {
-                var userId = User.Identity.GetUserId();               
-                bankAccount.HouseholdId = houseId;
-                bankAccount.OwnerId = userId;
-                bankAccount.Name = BankName;
-               
-
-                bankAccount.Created = DateTime.Now;
-                db.BankAccounts.Add(bankAccount);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.HouseholdId = new SelectList(db.Households, "Id", "Name", bankAccount.HouseholdId);
-            ViewBag.OwnerId = new SelectList(db.Users, "Id", "FirstName", bankAccount.OwnerId);
-            return View(bankAccount);
-        }
 
         // GET: BankAccounts/Edit/5
         public ActionResult Edit(int? id)

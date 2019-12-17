@@ -169,6 +169,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BankAccountsController.cs" />
+    <Compile Include="Controllers\BarChartsController.cs" />
     <Compile Include="Controllers\BudgetItemsController.cs" />
     <Compile Include="Controllers\BudgetsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="Controllers\TransactionsController.cs" />
     <Compile Include="Enumerations\TransactionType.cs" />
     <Compile Include="Extensions\InvitationExtensions.cs" />
+    <Compile Include="Extensions\TransactionsExtension.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -199,6 +201,7 @@
     <Compile Include="Models\Invitation.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Notification.cs" />
+    <Compile Include="Models\StackedChart.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Models\ViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -211,6 +214,7 @@
     <Content Include="Contents\animate.css" />
     <Content Include="Contents\bootstrap.min.css" />
     <Content Include="Contents\c3.min.css" />
+    <Content Include="Contents\charts.css" />
     <Content Include="Contents\font-awesome.min.css" />
     <Content Include="Contents\form.css" />
     <Content Include="Contents\gsdk-bootstrap-wizard.css" />
@@ -229,7 +233,9 @@
     <Content Include="Images\member.jpg" />
     <Content Include="Images\demohead.jpg" />
     <Content Include="Images\pig2.png" />
+    <Content Include="Scripts\bar-chart.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\Chart.js" />
     <Content Include="Scripts\form-active.js" />
     <Content Include="Scripts\gsdk-bootstrap-wizard.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
@@ -311,6 +317,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Uploads\" />
+    <Folder Include="Views\BarCharts\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -342,6 +349,7 @@
     <Content Include="Views\Transactions\Edit.cshtml" />
     <Content Include="Views\Transactions\Index.cshtml" />
     <None Include="Properties\PublishProfiles\rbanjaraFinancialPortal - Web Deploy.pubxml" />
+    <Content Include="Views\Transactions\AllTransactions.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

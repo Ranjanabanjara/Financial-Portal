@@ -1,6 +1,14 @@
 ﻿@model IEnumerable<Project_4.Models.Household>
+@using Microsoft.AspNet.Identity;
+@using Project_4.Models;
+@using Project_4.Helpers
 
-
+@{
+    var currentUserId = HttpContext.Current.User.Identity.GetUserId();
+    ApplicationDbContext db = new ApplicationDbContext();
+    var currentUser = db.Users.Find(currentUserId);
+    HouseholdHelper householdHelper = new HouseholdHelper();
+}
 
 <!-- Main Menu area start-->
 <div class="main-menu-area mg-tb-40">
@@ -8,20 +16,26 @@
         <div class="row">
             <div class="col-lg-12">
                 <ul class="nav nav-tabs custom-menu-wrap">
+
                     <li class="active">
-                        <a data-toggle="tab" href="#home"><i class="fa fa-home"></i></a>
+                        <a href="@Url.Action("Dashboard","Households")"><span class="fl2"><i class="fa fa-home"></i></span></a>
                     </li>
-                    <li>
-                        <a data-toggle="tab" href="#member">Members</a>
-                    </li>
+                    @if (User.IsInRole("HouseholdHead"))
+                    {
+                        <li>
+                            <a data-toggle="tab" href="#member">Members</a>
+                        </li>
+
+                    }
+
                     <li>
                         <a data-toggle="tab" href="#bankAccount">BankAccounts</a>
                     </li>
                     <li>
-                        <a data-toggle="tab" href="#budgetItem">BudgetItems</a>
+                        <a data-toggle="tab" href="#budget">Budgets</a>
                     </li>
                     <li>
-                        <a data-toggle="tab" href="#budget">Budgets</a>
+                        <a data-toggle="tab" href="#budgetItem">BudgetItems</a>
                     </li>
 
                 </ul>
@@ -30,13 +44,18 @@
                         <ul class="main-menu-dropdown">
                             @foreach (var item in Model)
                             {
-                                <li>
-                                    <a href="@Url.Action("Details", "Households", new { id = item.Id})"> Get Inside @Html.DisplayFor(modelItem => item.Name)</a>
-                                   
-                                </li>
+                                if (currentUser.HouseholdId == item.Id)
+                                {
+                                    <li>
+                                        <a href="#"><span class="fl1">@item.Greeting</span></a>
+
+                                    </li>
+
+                                }
+
                             }
 
-                            </ul>
+                        </ul>
                     </div>
                     <div id="member" class="tab-pane tab-custon-menu-bg animated flipInX">
                         <ul class="main-menu-dropdown">
@@ -64,23 +83,26 @@
 
                         </ul>
                     </div>
-                    <div id="budgetItem" class="tab-pane tab-custon-menu-bg animated flipInX">
+                    <div id="budget" class="tab-pane tab-custon-menu-bg animated flipInX">
                         <ul class="main-menu-dropdown">
                             <li>
-                                <a href="@Url.Action("Index", "BudgetItems")">All Categories</a>
+                                <a href="@Url.Action("Index", "Budgets")">All Categories</a>
                             </li>
                             <li>
-                                <a href="@Url.Action("Create", "BudgetItems")">Add New Category</a>
+                                <a href="@Url.Action("Create", "Budgets")">Add New Category</a>
                             </li>
 
 
                         </ul>
                     </div>
-                    <div id="budget" class="tab-pane tab-custon-menu-bg animated flipInX">
+                    <div id="budgetItem" class="tab-pane tab-custon-menu-bg animated flipInX">
                         <ul class="main-menu-dropdown">
 
                             <li>
-                                <a href="@Url.Action("Index", "Budgets")">My Budget</a>
+                                <a href="@Url.Action("Index", "BudgetItems")">All BudgetItems</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Create", "BudgetItems")">Create BudgetItem</a>
                             </li>
 
                         </ul>
@@ -92,3 +114,132 @@
     </div>
 </div>
 <!-- Main Menu area End-->
+
+<div class="breadcome-area mg-t-40 mg-b-30">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcome-list shadow-reset">
+                    <div class="breadcome-heading">
+                        @foreach (var item in Model)
+                        {
+                            if (currentUser.HouseholdId == item.Id)
+                            {
+
+                                <h1 class="text-left fl2">
+
+                                    <a href="@Url.Action("Details", "Households", new { id = item.Id})"><i class="fa fa-eye"></i> <span class="fl2">See Details of My Household</span></a>
+                                </h1>
+
+
+                            }
+
+                        }
+
+                    </div>
+                    <ul class="breadcome-menu">
+                    </ul>
+                </div>
+
+            </div>
+         
+        </div>
+    </div>
+</div>
+
+
+<div class="charts-area mg-t-40 mg-b-40">
+    <div class="container">
+        <div class="row">
+           
+            <div class="col-lg-12">
+                <div class="charts-single-pro shadow-reset">
+                    <div class="alert-title">
+                        <h2>BankAccount Bar Chart Stacked</h2>
+                        <p>Quick Overview of BankAccount's StartingBalance(SB), CurrentBalance(CB) and LowBalanceThreshold(LBT).</p>
+                    </div>
+                    <div id="bar5-chart">
+                        <canvas id="barchart5"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+    <script src="~/Scripts/Chart.js"></script>
+    <script src="~/Scripts/bar-chart.js"></script>
+    <script>
+
+
+    /*  5.  Bar Chart Stacked
+    /*----------------------------------------*/
+
+
+
+          $(function () {
+            var url = '@Url.Action("BarChartData","BarCharts")';
+              $.post(url).then(function (response) {
+
+	            var ctx = $("#barchart5");
+                  var barchart5 = new Chart(ctx, {
+                      type: 'bar',
+                      data: {
+                          labels: response.Labels,
+                          datasets: [{
+                              label: response.BarLabel1,
+                              data: response.Data1,
+                              backgroundColor: response.BGColor1
+                          },
+                          {
+                              label: response.BarLabel2,
+                              data: response.Data2,
+                              backgroundColor: response.BGColor2
+                          },
+                          {
+                              label: response.BarLabel3,
+                              data: response.Data3,
+                              backgroundColor: response.BGColor3
+                          }]
+                      },
+		            options: {
+			            title:{
+				            display:true,
+				            text:"Bar Chart Stacked"
+                        },
+                        intersect: false,
+                        tooltips: {
+                            enabled: true,
+                            mode: 'single',
+                            callbacks: {
+                                label: function (tooltipItems, data) {
+                                    return '$' + tooltipItems.yLabel;
+                                }
+                            }
+
+			            },
+			            responsive: true,
+			            scales: {
+				            xAxes: [{
+					            stacked: true,
+				            }],
+				            yAxes: [{
+                                stacked: true,
+                                ticks: {
+                                    callback: function (value, index, values) {
+                                        return '$' + value;
+                                    }
+                                }
+				            }]
+			            }
+		            }
+	            });
+
+
+            });
+        });
+
+
+    </script>
+}

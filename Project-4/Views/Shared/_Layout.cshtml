@@ -1,10 +1,12 @@
 ﻿@using Project_4.Models;
-@using Project_4.Helpers;  
-@{ 
-   
+@using Project_4.Helpers;
+@using Project_4.Extensions
+@{
+
     RoleHelper roleHelper = new RoleHelper();
     UserHelper userHelper = new UserHelper();
     HouseholdHelper householdHelper = new HouseholdHelper();
+
 }
 
 <!doctype html>
@@ -50,7 +52,7 @@
 
     <!-- charts CSS
         ============================================ -->
-
+    <link href="~/Contents/charts.css" rel="stylesheet" />
     <link href="~/Contents/c3.min.css" rel="stylesheet" />
     <!-- style CSS
         ============================================ -->
@@ -89,8 +91,12 @@
                             <li class="nav-item dropdown">
                                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle">My Household<span class="angle-down-topmenu"><i class="fa fa-angle-down"></i></span></a>
                                 <div role="menu" class="dropdown-menu animated flipInX">
-                                    <a href="@Url.Action("Create", "Invitations")" class="dropdown-item">Invite Member</a>
-                                    <a href="" class="dropdown-item">Settings</a>
+                                    @if (User.IsInRole("HouseholdHead"))
+                                    {
+                                        <a href="@Url.Action("Create", "Invitations")" class="dropdown-item">Invite Member</a>
+
+                                    }
+                                    <a href="@Url.Action("AllTransactions", "Transactions")" class="dropdown-item">All Transactions</a>
                                     <a href="@Url.Action("Create", "Transactions")" class="dropdown-item">Add Transaction</a>
                                 </div>
                             </li>
@@ -103,29 +109,54 @@
                         <ul class="nav navbar-nav mai-top-nav header-right-menu">
 
                             <li class="nav-item">
-                                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="indicator-nt"></span></a>
+                                <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge">@TransactionsExtension.GetUnreadNotifications().Count()</span></a>
                                 <div role="menu" class="notification-author dropdown-menu animated flipInX">
                                     <div class="notification-single-top">
                                         <h1>Notifications</h1>
                                     </div>
+
                                     <ul class="notification-menu">
+                                        @if (TransactionsExtension.GetUnreadNotifications().Count() != 0)
+                                        {
+                                            foreach (var unreadNotification in TransactionsExtension.GetUnreadNotifications())
+                                            {
+                                                <li style="padding:20px;">
 
-                                        <li>
-                                            <a href="#">
-                                                <div class="notification-icon">
-                                                    <span class="fa fa-remove"></span>
-                                                </div>
-                                                <div class="notification-content">
-                                                    <span class="notification-date">16 Sept</span>
-                                                    <h2>Sulaiman din</h2>
-                                                    <p>Please done this project as soon possible.</p>
-                                                </div>
-                                            </a>
-                                        </li>
+                                                    @using (Html.BeginForm("Dismiss", "Notifications", FormMethod.Get, new { @id = "dismissForm" }))
+                                                    {
 
+                                                        @Html.AntiForgeryToken()
+
+                                                        @Html.Hidden("id", unreadNotification.Id)
+
+                                                        <button type="submit" class="btn btn-sm btn-danger pull-right"><i class="fa fa-times"></i></button>
+                                                        <a href="#">
+                                                            <div class="notification-content">
+                                                                <span class="notification-date"></span>
+                                                                <h2>@unreadNotification.Subject</h2>
+                                                                <p>@unreadNotification.Body</p>
+                                                            </div>
+                                                        </a>
+                                                    }
+
+                                                </li>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <a href="#">
+                                                    <div class="notification-content">
+                                                        <span class="notification-date"></span>
+                                                        <h2>There are no new Notifications!</h2>
+
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        }
                                     </ul>
                                     <div class="notification-view">
-                                        <a href="#">View All Notification</a>
+                                        <a href="@Url.Action("Index", "Notifications")">View All Notification</a>
                                     </div>
                                 </div>
                             </li>
@@ -133,14 +164,17 @@
                             <li class="nav-item textsmall">
                                 <a href="#" data-toggle="dropdown">
 
-                                    <img src="@userHelper.GetAvatarPathTwo()" width="30" class="img-circle" />  <span style="font-size:12px">@UserHelper.GetUserFirstName()</span> <span><i class="fa fa-angle-down"></i></span>
+                                    <img src="@userHelper.GetAvatarPathTwo()" width="30" class="img-circle" />  <span style="font-size:12px">@userHelper.GetUserFirstNameTwo()</span> <span><i class="fa fa-angle-down"></i></span>
 
                                 </a>
                                 <ul role="menu" class="dropdown-header-top author-log dropdown-menu animated flipInX">
+                                    <li>
+                                        <a href="#"><i class="fa fa-info-circle"></i> <span style="font-size:10px">@UserHelper.GetUserEmail()</span></a>
+                                    </li>
                                     @if (User.IsInRole("HouseholdHead") || User.IsInRole("Member"))
                                     {
                                         <li>
-                                            <a href="#"><i class="fa fa-location-arrow"></i> <span>@roleHelper.ListUserRoles(UserHelper.GetUserId().Id).ToList()[0]</span></a>
+                                            <a href="#"><i class="fa fa-info-circle"></i> <span>@roleHelper.ListUserRoles(UserHelper.GetUserId().Id).ToList()[0]</span></a>
                                         </li>
 
                                     }
@@ -151,9 +185,7 @@
                                         </li>
 
                                     }
-                                    <li>
-                                        <a href="#"><i class="fa fa-location-arrow"></i> <span>@UserHelper.GetUserEmail()</span></a>
-                                    </li>
+
                                     <li>
                                         <a href="@Url.Action("MyProfile", "Manage")"><i class="fa fa-hand-o-right"></i> <span>My Profile</span></a>
                                     </li>
@@ -161,7 +193,7 @@
                                     <li>
                                         <a href="@Url.Action("CustomLogOff", "Account")"><i class="fa fa-hand-o-right"></i> <span>Log Out</span></a>
                                     </li>
-                                    @if (User.IsInRole("Admin") || User.IsInRole("HouseholdHead") || User.IsInRole("Member"))
+                                    @if (User.IsInRole("HouseholdHead") || User.IsInRole("Member"))
                                     {
                                         <li>
                                             <a class="Alert Alert-color" href="#" data-toggle="modal" data-target="#AlertModalftblack"><i class="fa fa-hand-o-right"></i> <span>Leave Household</span></a>
@@ -177,13 +209,13 @@
                                 </ul>
                             </li>
 
-                            <li class="nav-item nav-setting-open">
+                            <li class="nav-item nav-setting-open" >
                                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-tasks"></i></a>
 
                                 <div role="menu" class="admintab-wrap menu-setting-wrap menu-setting-wrap-bg dropdown-menu animated flipInX">
                                     <ul class="nav nav-tabs custon-set-tab">
                                         <li class="active">
-                                            <a data-toggle="tab" href="#Members">Members In House</a>
+                                            <a data-toggle="tab" href="#Members">Household Members</a>
                                         </li>
 
 
@@ -201,31 +233,6 @@
                                                 </div>
                                                 <div class="notes-list-area notes-menu-scrollbar">
 
-                                                    @*<ul class="notes-menu-list">
-                                                            @foreach (var user in db.Users)
-                                                            {
-                                                                <li>
-                                                                    <a href="#">
-                                                                        <div class="notes-list-flow">
-                                                                            <div class="notes-img">
-                                                                                <img src="@user.AvatarPath" alt="" />
-                                                                            </div>
-                                                                            <div class="notes-content">
-                                                                                <p>@user.FirstName , @user.LastName</p>
-                                                                                <span>@user.Email</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </a>
-                                                                </li>
-
-                                                            }
-
-
-
-
-
-
-                                                        </ul>*@
                                                 </div>
                                             </div>
                                         </div>
@@ -291,50 +298,6 @@
         </div>
     </div>
     <!-- Header top area end-->
-    <!-- Main Menu area start-->
-    @*<div class="main-menu-area mg-tb-40">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <ul class="nav nav-tabs custom-menu-wrap">
-                            <li class="active">
-                                <a data-toggle="tab" href="#Home"><h5><i class="fa fa-home"></i></h5></a>
-                            </li>
-                            <li>
-                                <a data-toggle="tab" href="#Household">Household</a>
-                            </li>
-
-
-                        </ul>
-                        <div class="tab-content custom-menu-content">
-                            <div id="Home" class="tab-pane in active tab-custon-menu-bg animated flipInX">
-                                <ul class="main-menu-dropdown">
-
-                                   <li>
-                                       <h2 class="fontstyle1">Welcome To The Lobby of Financial Portal</h2>
-                                   </li>
-                                </ul>
-                            </div>
-                            <div id="Household" class="tab-pane tab-custon-menu-bg animated flipInX">
-                                <ul class="main-menu-dropdown">
-
-                                    <li>
-                                        <a href="@Url.Action("Create","Households")">Create Household</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Join Household</a>
-                                    </li>
-
-
-                                </ul>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
-    <!-- Main Menu area End-->
     <!-- Mobile Menu start -->
     <div class="mobile-menu-area">
         <div class="container">
@@ -347,56 +310,65 @@
                                     <a data-toggle="collapse" data-target="#Homemob" href="#">Home <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
                                     <ul id="Homemob" class="collapse dropdown-header-top">
                                         <li>
-                                            <a href="@Url.Action("Dashboard", "Home")">Dashboard</a>
+                                            <a href="@Url.Action("Dashboard", "Households")">Dashboard</a>
+                                        </li>
+               
+
+                                        @if (User.IsInRole("HouseholdHead"))
+                                        {
+                                            <li>
+                                                <a href="@Url.Action("Create", "Invitations")">Invite Member</a>
+                                            </li>
+
+                                        }
+                                        <li>
+                                            <a href="@Url.Action("Create", "Transactions")">Add Transaction</a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("AllTransactions", "Transactions")">All Transactions</a>
                                         </li>
 
-                                        <li>
-                                            <a href="@Url.Action("Create", "Households")">Create Household</a>
-                                        </li>
-                                        <li>
-                                            <a href="@Url.Action("Create", "Invitations")">Invite Member</a>
-                                        </li>
-                                        <li>
-                                            <a href="@Url.Action("Create", "Transactions")">Create Transaction</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a data-toggle="collapse" data-target="#Profilemob" href="#">My Profile<span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
-                                    <ul id="Profilemob" class="collapse dropdown-header-top">
-                                        <li>
-                                            <a href="inbox.html">View</a>
-                                        </li>
-                                        <li>
-                                            <a href="view-mail.html">Change Password</a>
-                                        </li>
-                                        <li>
-                                            <a href="compose-mail.html">Change Info</a>
-                                        </li>
-                                        <li>
-                                            <a href="compose-mail.html">Change Profile Picture</a>
-                                        </li>
                                     </ul>
                                 </li>
 
 
                                 <li>
-                                    <a data-toggle="collapse" data-target="#Chartsmob" href="#">Charts <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                    <a data-toggle="collapse" data-target="bank" href="#">BankAccounts<span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                    <ul id="bank" class="collapse dropdown-header-top">
+                                        <li>
+                                            <a href="@Url.Action("Index", "BankAccounts")">MyAccounts</a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("Create","BankAccounts")">Add New BankAccount</a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("Index","Transactions")">My Transactions</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+
+
+                                <li>
+                                    <a data-toggle="collapse" data-target="#Chartsmob" href="#">Budgets <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
                                     <ul id="Chartsmob" class="collapse dropdown-header-top">
                                         <li>
-                                            <a href="#">Bar Charts</a>
+                                            <a href="@Url.Action("Index", "Budgets")">All Categories</a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("Create", "Budgets")">Add New Category</a>
                                         </li>
 
                                     </ul>
                                 </li>
                                 <li>
-                                    <a data-toggle="collapse" data-target="#Tablesmob" href="#">Tables <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
+                                    <a data-toggle="collapse" data-target="#Tablesmob" href="#">Budget Items <span class="admin-project-icon adminpro-icon adminpro-down-arrow"></span></a>
                                     <ul id="Tablesmob" class="collapse dropdown-header-top">
                                         <li>
-                                            <a href="#">Static Table</a>
+                                            <a href="@Url.Action("Index", "BudgetItems")">All BudgetItems</a>
                                         </li>
                                         <li>
-                                            <a href="#">Data Table</a>
+                                            <a href="@Url.Action("Create", "BudgetItems")">Create BudgetItem</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -445,8 +417,10 @@
 
     <script src="~/Scripts/main.js"></script>
     <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+
     <script>
-        
+
+
         $(document).ready(function () {
             $('#dataTable').DataTable(
                 {
@@ -457,6 +431,8 @@
                     pageLength: 10,
                     "scrollX": true
                 });
+
+
         });
     </script>
 

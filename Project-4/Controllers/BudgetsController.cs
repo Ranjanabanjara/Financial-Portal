@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Project_4.Helpers;
 using Project_4.Models;
 
 namespace Project_4.Controllers
@@ -13,12 +15,12 @@ namespace Project_4.Controllers
     public class BudgetsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
+        private HouseholdHelper householdHelper = new HouseholdHelper();
         // GET: Budgets
         public ActionResult Index()
         {
-            var budgets = db.Budgets.Include(b => b.Household).Include(b => b.Owner);
-            return View(budgets.ToList());
+           
+            return View(householdHelper.ListMyBudgets());
         }
 
         // GET: Budgets/Details/5
@@ -53,8 +55,12 @@ namespace Project_4.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = User.Identity.GetUserId();
+                var user = db.Users.Find(userId);
                 budget.Created = DateTime.Now;
-               
+                budget.HouseholdId = (int)user.HouseholdId;
+                budget.OwnerId = userId;
+                budget.CurrentAmount = budget.TargetAmount;
                 db.Budgets.Add(budget);
                 db.SaveChanges();
                 return RedirectToAction("Index");

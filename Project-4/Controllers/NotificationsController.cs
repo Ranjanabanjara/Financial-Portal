@@ -14,6 +14,17 @@ namespace Project_4.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+
+        // GET: TicketNotifications
+        public ActionResult Dismiss(int id)
+        {
+            var notification = db.Notifications.Find(id);
+            notification.IsRead = true;
+            db.SaveChanges();
+            return RedirectToAction("Dashboard", "Households");
+
+
+        }
         // GET: Notifications
         public ActionResult Index()
         {

@@ -22,18 +22,18 @@
                     </div>
                     <div class="sparkline8-graph">
                         <div class="datatable-dashv1-list custom-datatable-overright">
-
+                            <a href="@Url.Action("Create", "Transactions")" class="pull-left">Add Transaction</a>
                             <table id="dataTable" class="table-hover table-striped table-bordered" style="width:100%">
 
                                 <thead>
-                                    <tr style="line-height:40px">
-                                       
-                                       
+                                    <tr class="tr1">
+
+
                                         <th>
                                             @Html.DisplayNameFor(model => model.AccountType)
                                         </th>
                                         <th>
-                                            @Html.DisplayNameFor(model => model.Name)
+                                            @Html.DisplayName("BankName")
                                         </th>
                                         <th>
                                             @Html.DisplayNameFor(model => model.StartingBalance)
@@ -53,8 +53,8 @@
 
                                     @foreach (var item in Model)
                                     {
-                                        <tr style="line-height:30px">
-                                           
+                                        <tr class="tr2">
+
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.AccountType)
                                             </td>
