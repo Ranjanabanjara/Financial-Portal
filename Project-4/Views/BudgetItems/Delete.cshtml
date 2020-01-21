@@ -4,77 +4,88 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>BudgetItem</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Budget.OwnerId)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Budget.OwnerId)
-        </dd>
+<div class="row" style="padding:40px">
+    <div class="col-md-8">
+        <h2>Delete BudgetItem??</h2>
+        <div>
+            
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                  Created By:
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Budget.Owner.FullName)
+                </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+                <dt>
+                    BudgetItem:
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+                <dt>
+                   Description:
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.TargetAmount)
-        </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.TargetAmount)
-        </dd>
+                <dt>
+                   Target Amount:
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CurrentAmount)
-        </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.TargetAmount)
+                </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.CurrentAmount)
-        </dd>
+                <dt>
+                  Current Amount:
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.CurrentAmount)
+                </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
+                <dt>
+                    Created:
+                </dt>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Created)
+                </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
+                <dt>
+                    Updated:
+                </dt>
 
-    </dl>
+                <dd>
+                    @Html.DisplayFor(model => model.Updated)
+                </dd>
 
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
+            </dl>
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color" style=" padding-left:90px">
+            <input type="submit" value="Delete" class="btn btn-danger" /> |    <span class="btn btn-default">@Html.ActionLink("Cancel", "Index")</span>
+
         </div>
-    }
+            }
+        </div>
+
+    </div>
 </div>
+
+       
+
+     
+      

@@ -22,7 +22,7 @@
                     </div>
                     <div class="sparkline8-graph">
                         <div class="datatable-dashv1-list custom-datatable-overright">
-                            <a href="@Url.Action("Create", "Transactions")" class="pull-left">Add Transaction</a>
+                            <a href="@Url.Action("Create", "BankAccounts")" class="pull-left">Add BankAccount</a>
                             <table id="dataTable" class="table-hover table-striped table-bordered" style="width:100%">
 
                                 <thead>
@@ -71,8 +71,7 @@
                                                 @Html.DisplayFor(modelItem => item.Created)
                                             </td>
                                             <td>
-                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                                               
                                                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                                             </td>
                                         </tr>

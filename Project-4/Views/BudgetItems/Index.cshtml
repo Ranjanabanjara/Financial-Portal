@@ -1,7 +1,12 @@
 ﻿@model IEnumerable<Project_4.Models.BudgetItem>
+@using Microsoft.AspNet.Identity
+@using Project_4.Models
 
 @{
+    ApplicationDbContext db = new ApplicationDbContext();
     ViewBag.Title = "Index";
+    var userId = HttpContext.Current.User.Identity.GetUserId();
+    var user = db.Users.Find(userId);
 }
 
 <!-- Data table area Start-->
@@ -22,12 +27,12 @@
                     </div>
                     <div class="sparkline8-graph">
                         <div class="datatable-dashv1-list custom-datatable-overright">
-
+                            <a href="@Url.Action("Create", "BudgetItems")">Add New</a>
                             <table id="dataTable" class="table-striped table-bordered" style="width:100%">
 
                                 <thead>
                                     <tr class="tr1">
-                                       
+
                                         <th>
                                             @Html.DisplayName("BudgetItem")
                                         </th>
@@ -46,7 +51,9 @@
                                         <th>
                                             @Html.DisplayNameFor(model => model.Updated)
                                         </th>
-                                        <th></th>
+                                        <th>
+                                            Options
+                                        </th>
                                     </tr>
 
                                 </thead>
@@ -55,7 +62,7 @@
                                     @foreach (var item in Model)
                                     {
                                         <tr class="tr2">
-                                          
+
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.Name)
                                             </td>
@@ -75,9 +82,15 @@
                                                 @Html.DisplayFor(modelItem => item.Updated)
                                             </td>
                                             <td>
-                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                              
-                                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                                
+                                                @if (item.Budget.OwnerId == userId )
+                                                {
+                                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) <br />
+
+                                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+
+                                                }
+
                                             </td>
                                         </tr>
 
@@ -95,5 +108,3 @@
     </div>
 </div>
 <!-- Data table area End-->
-
-

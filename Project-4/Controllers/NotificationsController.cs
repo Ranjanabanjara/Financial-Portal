@@ -6,6 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Project_4.Extensions;
+using Project_4.Helpers;
 using Project_4.Models;
 
 namespace Project_4.Controllers
@@ -13,7 +15,7 @@ namespace Project_4.Controllers
     public class NotificationsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
+        private HouseholdHelper householdHelper = new HouseholdHelper();
 
         // GET: TicketNotifications
         public ActionResult Dismiss(int id)
@@ -28,8 +30,8 @@ namespace Project_4.Controllers
         // GET: Notifications
         public ActionResult Index()
         {
-            var notifications = db.Notifications.Include(n => n.Household).Include(n => n.Receipent);
-            return View(notifications.ToList());
+
+            return View(TransactionsExtension.UsersAllNotification());
         }
 
         // GET: Notifications/Details/5

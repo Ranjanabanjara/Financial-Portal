@@ -348,8 +348,9 @@
     <Content Include="Views\Transactions\Details.cshtml" />
     <Content Include="Views\Transactions\Edit.cshtml" />
     <Content Include="Views\Transactions\Index.cshtml" />
+    <Content Include="Views\Households\RemoveMember.cshtml" />
+    <Content Include="Views\Shared\_RemoveMemberPartial.cshtml" />
     <None Include="Properties\PublishProfiles\rbanjaraFinancialPortal - Web Deploy.pubxml" />
-    <Content Include="Views\Transactions\AllTransactions.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

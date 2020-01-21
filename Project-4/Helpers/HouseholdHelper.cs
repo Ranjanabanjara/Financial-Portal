@@ -80,5 +80,14 @@ namespace Project_4.Helpers
              return transactions;
         }
 
+     public List<ApplicationUser> GetOnlymembers()
+        {
+            var userId = HttpContext.Current.User.Identity.GetUserId();
+            var myHouseholdId = db.Users.Find(userId).HouseholdId;           
+            var members = db.Users.Where(u => u.HouseholdId == myHouseholdId && u.Id != userId).ToList();
+            return members;
+        }
+    
+
     }
 }

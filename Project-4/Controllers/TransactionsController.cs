@@ -19,16 +19,20 @@ namespace Project_4.Controllers
         private HouseholdHelper householdHelper = new HouseholdHelper();
 
         // GET: Transactions
-        public ActionResult Index()
+        public ActionResult Index(string myTransactions)
         {
-            return View(householdHelper.ListMyTransactions());
+            if (!string.IsNullOrEmpty(myTransactions))
+            {
+                return View(householdHelper.ListMyTransactions());
+            }
+            else
+            {
+                return View(householdHelper.ListHouseholdTransactions());
+            }
+               
 
         }
-        public ActionResult AllTransactions()
-        {
-            return View(householdHelper.ListHouseholdTransactions());
-           
-        }
+      
 
         // GET: Transactions/Details/5
         public ActionResult Details(int? id)
@@ -48,9 +52,13 @@ namespace Project_4.Controllers
         // GET: Transactions/Create
         public ActionResult Create()
         {
-            var houseId = db.Users.Find(User.Identity.GetUserId()).HouseholdId ?? 0;
-            ViewBag.BankAccountId = new SelectList(db.BankAccounts, "Id", "Name");
-            ViewBag.BudgetItemId = new SelectList(db.BudgetItems, "Id", "Name");
+            var houseId = householdHelper.GetMyHouse().Id;
+            var budgets = db.Households.Where(h => h.Id == houseId).SelectMany(b => b.Budgets);
+            var budgetItems = budgets.SelectMany(b => b.BudgetItems).ToList();
+            var bankAccounts = householdHelper.ListMyBanks();
+
+            ViewBag.BankAccountId = new SelectList(bankAccounts, "Id", "Name");
+            ViewBag.BudgetItemId = new SelectList(budgetItems, "Id", "Name");
            
             return View();
         }

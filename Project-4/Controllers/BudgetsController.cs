@@ -19,8 +19,9 @@ namespace Project_4.Controllers
         // GET: Budgets
         public ActionResult Index()
         {
-           
-            return View(householdHelper.ListMyBudgets());
+            var houseId = householdHelper.GetMyHouse().Id;
+            var budgets = db.Budgets.Where(i => i.HouseholdId == houseId);
+            return View(budgets.ToList());
         }
 
         // GET: Budgets/Details/5
@@ -94,10 +95,12 @@ namespace Project_4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,HouseholdId,OwnerId,Name,TargetAmount,CurrentAmount,Created,Updated")] Budget budget)
+        public ActionResult Edit([Bind(Include = "Id,HouseholdId,OwnerId,Name,TargetAmount,CurrentAmount,Created")] Budget budget)
         {
             if (ModelState.IsValid)
             {
+                budget.CurrentAmount = budget.TargetAmount;     
+                budget.Updated = DateTime.Now;               
                 db.Entry(budget).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -1,8 +1,10 @@
 ﻿@model IEnumerable<Project_4.Models.Budget>
-
+@using Microsoft.AspNet.Identity
 @{
     ViewBag.Title = "Index";
+    var userId = HttpContext.Current.User.Identity.GetUserId();
 }
+
 
 <!-- Data table area Start-->
 <div class="admin-dashone-data-table-area pt">
@@ -21,6 +23,7 @@
                         </div>
                     </div>
                     <div class="sparkline8-graph">
+                        <a href="@Url.Action("Create", "Budgets")">Add new</a>
                         <div class="datatable-dashv1-list custom-datatable-overright">
 
                             <table id="dataTable" class="table-hover table-striped table-bordered" style="width:100%">
@@ -28,9 +31,11 @@
                                 <thead>
                                     <tr style="line-height:40px">
 
-
                                         <th>
-                                           BudgetCategory
+                                            Added By
+                                        </th>
+                                        <th>
+                                            BudgetCategory
                                         </th>
                                         <th>
                                             @Html.DisplayNameFor(model => model.TargetAmount)
@@ -56,30 +61,38 @@
 
                                     @foreach (var item in Model)
                                     {
-                                        <tr style="line-height:30px">
+                                    <tr style="line-height:30px">
 
-                                          
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Name)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.TargetAmount)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.CurrentAmount)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Created)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Updated)
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                                
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Owner.FullName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.TargetAmount)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.CurrentAmount)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Created)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Updated)
+                                        </td>
+
+                                        <td>
+                                            @if (item.OwnerId == userId)
+                                            {
+                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) <br/>
+
                                                 @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                                            </td>
-                                        </tr>
+
+                                             }
+
+                                        </td>
+                                    </tr>
 
 
 

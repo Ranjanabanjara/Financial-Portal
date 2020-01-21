@@ -4,6 +4,7 @@
 @using Project_4.Helpers
 
 @{
+   
     var currentUserId = HttpContext.Current.User.Identity.GetUserId();
     ApplicationDbContext db = new ApplicationDbContext();
     var currentUser = db.Users.Find(currentUserId);
@@ -20,13 +21,12 @@
                     <li class="active">
                         <a href="@Url.Action("Dashboard","Households")"><span class="fl2"><i class="fa fa-home"></i></span></a>
                     </li>
-                    @if (User.IsInRole("HouseholdHead"))
-                    {
+                   
                         <li>
                             <a data-toggle="tab" href="#member">Members</a>
                         </li>
 
-                    }
+                    
 
                     <li>
                         <a data-toggle="tab" href="#bankAccount">BankAccounts</a>
@@ -59,15 +59,29 @@
                     </div>
                     <div id="member" class="tab-pane tab-custon-menu-bg animated flipInX">
                         <ul class="main-menu-dropdown">
-                            <li>
-                                <a href="@Url.Action("Create", "Invitations")">Invite Member</a>
+                            @if (User.IsInRole("HouseholdHead"))
+                            {
+                                <li>
+                                    <a href="@Url.Action("Create", "Invitations")">Invite Member</a>
 
-                            </li>
-                            <li>
-                                <a href="#">Remove Member</a>
-                            </li>
+                                </li>
 
-                        </ul>
+                                <li>
+                                    <a class="Warning Warning-color mg-b-10" href="#" data-toggle="modal" data-target="#removeMember">Remove Member</a>
+                                </li>
+                            }
+                                <li>
+                                    @foreach (var item in Model)
+                                    {
+                                        if (currentUser.HouseholdId == item.Id)
+                                        {
+                                            <a href="@Url.Action("Details", "Households", new { id = item.Id})">All Members</a>
+
+                                        }
+                                    }
+                                </li>
+
+                            </ul>
                     </div>
                     <div id="bankAccount" class="tab-pane tab-custon-menu-bg animated flipInX">
                         <ul class="main-menu-dropdown">
@@ -78,8 +92,10 @@
                                 <a href="@Url.Action("Create","BankAccounts")">Create New Account</a>
                             </li>
                             <li>
-                                <a href="@Url.Action("Index","Transactions")">My Transactions</a>
+                                <a href="@Url.Action("Index","Transactions", new { myTransactions = "True" })">My Transactions</a>
                             </li>
+                           
+                           
 
                         </ul>
                     </div>
@@ -142,7 +158,7 @@
                 </div>
 
             </div>
-         
+
         </div>
     </div>
 </div>
@@ -151,12 +167,12 @@
 <div class="charts-area mg-t-40 mg-b-40">
     <div class="container">
         <div class="row">
-           
+
             <div class="col-lg-12">
                 <div class="charts-single-pro shadow-reset">
                     <div class="alert-title">
                         <h2>BankAccount Bar Chart Stacked</h2>
-                        <p>Quick Overview of BankAccount's StartingBalance(SB), CurrentBalance(CB) and LowBalanceThreshold(LBT).</p>
+                        <p>Quick Overview of Your BankAccount's StartingBalance(SB), CurrentBalance(CB) and LowBalanceThreshold(LBT).</p>
                     </div>
                     <div id="bar5-chart">
                         <canvas id="barchart5"></canvas>
@@ -166,6 +182,42 @@
         </div>
     </div>
 </div>
+
+<div id="removeMember" class="modal modal-adminpro-general Customwidth-popup-WarningModal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header header-color-modal bg-color-3">
+                <h4 class="modal-title">Remove Member</h4>
+                <div class="modal-close-area modal-close-df">
+                    <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                </div>
+            </div>
+            <div class="modal-body">
+                <h5>Select a member you wish to remove from your Household!</h5>
+                <h6> <span><i class="fa fa-warning"></i></span>You cannot undo the changes that occurs!</h6>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        @foreach (var item in Model)
+                        {
+                            if (currentUser.HouseholdId == item.Id)
+                            {
+                                @Html.Partial("_RemoveMemberPartial", item);
+                            }
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a data-dismiss="modal" href="#">Cancel</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 @section scripts{
 
     <script src="~/Scripts/Chart.js"></script>

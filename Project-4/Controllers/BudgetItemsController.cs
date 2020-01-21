@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Project_4.Helpers;
 using Project_4.Models;
 
 namespace Project_4.Controllers
@@ -13,11 +14,13 @@ namespace Project_4.Controllers
     public class BudgetItemsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
+        private HouseholdHelper householdHelper = new HouseholdHelper();
         // GET: BudgetItems
         public ActionResult Index()
         {
-            var budgetItems = db.BudgetItems.Include(b => b.Budget);
+            var houseId = householdHelper.GetMyHouse().Id;
+            var budgets = db.Households.Where(h => h.Id == houseId).SelectMany(b => b.Budgets);
+            var budgetItems = budgets.SelectMany(b => b.BudgetItems).ToList();
             return View(budgetItems.ToList());
         }
 
@@ -39,7 +42,9 @@ namespace Project_4.Controllers
         // GET: BudgetItems/Create
         public ActionResult Create()
         {
-            ViewBag.BudgetId = new SelectList(db.Budgets, "Id", "Name");
+            var houseId = householdHelper.GetMyHouse().Id;
+            var budgets = db.Households.Where(h => h.Id == houseId).SelectMany(b => b.Budgets);
+            ViewBag.BudgetId = new SelectList(budgets, "Id", "Name");
             return View();
         }
 
@@ -60,7 +65,7 @@ namespace Project_4.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.BudgetId = new SelectList(db.Budgets, "Id", "OwnerId", budgetItem.Budget.Name);
+           
             return View(budgetItem);
         }
 
@@ -85,10 +90,11 @@ namespace Project_4.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,BudgetId,Name,Description,TargetAmount,CurrentAmount,Updated")] BudgetItem budgetItem)
+        public ActionResult Edit([Bind(Include = "Id,BudgetId,Name,Description,TargetAmount,Created")] BudgetItem budgetItem)
         {
             if (ModelState.IsValid)
             {
+                budgetItem.CurrentAmount = budgetItem.TargetAmount;               
                 budgetItem.Updated = DateTime.Now;
                 db.Entry(budgetItem).State = EntityState.Modified;
                 db.SaveChanges();

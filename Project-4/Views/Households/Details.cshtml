@@ -8,8 +8,8 @@
     var userId = HttpContext.Current.User.Identity.GetUserId();
 }
 
- <div class="row">
-     
+<div class="row">
+
     <div class="container">
         <div class="row">
             <div class="col-lg-4">
@@ -19,7 +19,7 @@
                             <h3>Total Members</h3>
                             <div class="sparkline11-outline-icon">
                                 <span class="sparkline11-collapse-link"><i class="fa fa-chevron-up"></i></span>
-                               
+
                                 <span class="sparkline11-collapse-close"><i class="fa fa-times"></i></span>
                             </div>
                         </div>
@@ -27,9 +27,9 @@
                     <div class="sparkline11-graph dashone-comment dashtwo-comment comment-scrollbar">
                         <h3 class="text-center text-primary mg-b-10">
                             There are total @Model.Owner.Count() members.
+
+
                         </h3>
-                        <h5 style="padding-left:70px"><i class="fa fa-eye"></i> <span style="font-size:16px; font-weight:900">@roleHelper.ListUserRoles(userId).FirstOrDefault()</span></h5>
-                      
 
                         @foreach (var user in Model.Owner)
                         {
@@ -40,13 +40,14 @@
                                     </a>
                                 </div>
                                 <div class="daily-feed-content">
-
+                                    <h5><i class="fa fa-eye"></i> <span>@roleHelper.ListUserRoles(user.Id).FirstOrDefault()</span></h5>
                                     <h4><i class="fa fa-info-circle"></i> <span>@user.FullName</span></h4>
 
                                     <p> <i class="fa fa-envelope"></i>  <span>@user.UserName</span></p>
-                                    <p> <i class="fa fa-bank"></i> <span>BankAccounts: @user.BankAccounts.Count()</span></p>
+                                    <p style="padding-left:70px"> <i class="fa fa-bank"></i> <span>BankAccounts: @user.BankAccounts.Count()</span></p>
 
                                 </div>
+
                             </div>
 
 
@@ -58,14 +59,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8">
+            <div class="col-lg-6">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="income-dashone-total shadow-reset mg-tb-30">
                             <div class="income-title">
                                 <div class="main-income-head">
                                     <h2>Transactions</h2>
-                                    <div class="main-income-phara order-cl">
+                                    <div class="main-income-phara">
                                         <p>Total</p>
                                     </div>
                                 </div>
@@ -73,99 +74,129 @@
                             <div class="income-dashone-pro">
                                 <div class="income-rate-total">
                                     <div class="price-adminpro-rate">
-                                        <h3><span class="counter"></span></h3>
-                                    </div>
-                                    <div class="price-graph">
-                                        <span id="sparkline6"></span>
-                                    </div>
-                                </div>
-                                <div class="income-range order-cl">
-                                    <p>New</p>
-                                    <span class="income-percentange">66% <i class="fa fa-level-up"></i></span>
-                                </div>
-                                <div class="clear"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="income-dashone-total shadow-reset mg-tb-30">
-                            <div class="income-title">
-                                <div class="main-income-head">
-                                    <h2>Visitor</h2>
-                                    <div class="main-income-phara visitor-cl">
-                                        <p>Today</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="income-dashone-pro">
-                                <div class="income-rate-total">
-                                    <div class="price-adminpro-rate">
-                                        <h3><span class="counter">8,88,200</span></h3>
-                                    </div>
-                                    <div class="price-graph">
-                                        <span id="sparkline2"></span>
-                                    </div>
-                                </div>
-                                <div class="income-range visitor-cl">
-                                    <p>New Visitor</p>
-                                    <span class="income-percentange">55% <i class="fa fa-level-up"></i></span>
-                                </div>
-                                <div class="clear"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="income-dashone-total shadow-reset mg-tb-30">
-                            <div class="income-title">
-                                <div class="main-income-head">
-                                    <h2>Income</h2>
-                                    <div class="main-income-phara">
-                                        <p>Monthly</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="income-dashone-pro">
-                                <div class="income-rate-total">
-                                    <div class="price-adminpro-rate">
-                                        <h3><span>$</span><span class="counter">6,08,88,200</span></h3>
+                                        <h3><span></span><span class="counter">@Model.BankAccounts.SelectMany(b => b.Transactions).Count()</span></h3>
                                     </div>
                                     <div class="price-graph">
                                         <span id="sparkline1"></span>
                                     </div>
                                 </div>
                                 <div class="income-range">
-                                    <p>Total income</p>
-                                    <span class="income-percentange">98% <i class="fa fa-bolt"></i></span>
+                                    
+                                    <span class="income-percentange"><a href="@Url.Action("Index","Transactions")"><i class="fa fa-eye"></i> View</a></span>
                                 </div>
                                 <div class="clear"></div>
                             </div>
                         </div>
-                       
+
                     </div>
                     <div class="col-md-6">
-                        <div class="income-dashone-total shadow-reset mg-tb-30 ">
+                        <div class="income-dashone-total shadow-reset mg-tb-30">
                             <div class="income-title">
                                 <div class="main-income-head">
-                                    <h2>User activity</h2>
-                                    <div class="main-income-phara low-value-cl">
-                                        <p>Low Value</p>
+                                    <h2>Bank Accounts</h2>
+                                    <div class="main-income-phara visitor-cl">
+                                        <p>Total</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="income-dashone-pro">
                                 <div class="income-rate-total">
                                     <div class="price-adminpro-rate">
-                                        <h3><span class="counter">88,200</span></h3>
+                                        <h3><span class="counter">@Model.BankAccounts.Count()</span></h3>
+                                    </div>
+                                    <div class="price-graph">
+                                        <span id="sparkline2"></span>
+                                    </div>
+                                </div>
+                                <div class="income-range visitor-cl">
+                                    <p></p>
+                                    <span class="income-percentange"><a href="@Url.Action("Index","Transactions")"><i class="fa fa-eye"></i> View </a></span>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="income-dashone-total shadow-reset mg-tb-30">
+                            <div class="income-title">
+                                <div class="main-income-head">
+                                    <h2>Budgets Categories</h2>
+                                    <div class="main-income-phara">
+                                        <p>ALL</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="income-dashone-pro">
+                                <div class="income-rate-total">
+                                    <div class="price-adminpro-rate">
+                                        <h3><span></span><span class="counter">@Model.Budgets.Count()</span></h3>
+                                    </div>
+                                    <div class="price-graph">
+                                        <span id="sparkline1"></span>
+                                    </div>
+                                </div>
+                                <div class="income-range">
+                                    
+                                    <span class="income-percentange"><a href="@Url.Action("Index","Transactions")"><i class="fa fa-eye"></i> View </a></span>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="income-dashone-total shadow-reset mg-tb-30 ">
+                            <div class="income-title">
+                                <div class="main-income-head">
+                                    <h2>BudgetItems</h2>
+                                    <div class="main-income-phara low-value-cl">
+                                        <p>All</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="income-dashone-pro">
+                                <div class="income-rate-total">
+                                    <div class="price-adminpro-rate">
+                                        <h3><span class="counter">@Model.Budgets.SelectMany(b => b.BudgetItems).Count()</span></h3>
                                     </div>
                                     <div class="price-graph">
                                         <span id="sparkline5"></span>
                                     </div>
                                 </div>
                                 <div class="income-range low-value-cl">
-                                    <p>In first month</p>
-                                    <span class="income-percentange">33% <i class="fa fa-level-down"></i></span>
+                                    
+                                    <span class="income-percentange"><a href="@Url.Action("Index","Transactions")"><i class="fa fa-eye"></i> View </a></span>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="income-dashone-total shadow-reset mg-tb-30 ">
+                            <div class="income-title">
+                                <div class="main-income-head">
+                                    <h2>Invitations</h2>
+                                    <div class="main-income-phara low-value-cl">
+                                        <p>Not Accepted</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="income-dashone-pro">
+                                <div class="income-rate-total">
+                                    <div class="price-adminpro-rate">
+                                        <h3><span class="counter">@Model.Invitations.Where(i => i.IsValid == true).Count()</span></h3>
+                                    </div>
+                                    <div class="price-graph">
+                                        <span id="sparkline5"></span>
+                                    </div>
+                                </div>
+                                <div class="income-range low-value-cl">
+                                    <p></p>
+                                    <span class="income-percentange"><a href="@Url.Action("Index","Invitations")"><i class="fa fa-eye"></i> View </a></span>
                                 </div>
                                 <div class="clear"></div>
                             </div>
@@ -173,13 +204,40 @@
                     </div>
                 </div>
             </div>
-           
+
         </div>
     </div>
- </div>
+</div>
 
-       
-    
+
+<div id="removeMember" class="modal modal-adminpro-general Customwidth-popup-WarningModal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header header-color-modal bg-color-3">
+                <h4 class="modal-title">Remove Member</h4>
+                <div class="modal-close-area modal-close-df">
+                    <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                </div>
+            </div>
+            <div class="modal-body">
+                <h5>Select a member you wish to remove from your Household!</h5>
+                <h6> <span><i class="fa fa-warning"></i></span>You cannot undo the changes that occurs!</h6>
+
+                <div class="row">
+                    <div class="col-md-12">
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a data-dismiss="modal" href="#">Cancel</a>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
 

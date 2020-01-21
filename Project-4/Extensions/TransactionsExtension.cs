@@ -100,5 +100,10 @@ namespace Project_4.Extensions
             return db.Notifications.Where(t => t.ReceipentId == currentUserId && !t.IsRead).ToList();
 
         }
+        public static List<Notification> UsersAllNotification()
+        {
+            var userId = HttpContext.Current.User.Identity.GetUserId();
+            return db.Notifications.Where(t => t.ReceipentId == userId).ToList();
+        }
     }
 }

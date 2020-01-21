@@ -80,18 +80,18 @@
 
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="about">
-                                        <h6 class="text-center">Create Bank Account</h6>
+                                        <h6 class="text-center">Add A Bank Account</h6>
 
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
-                                                            @Html.LabelFor(m => m.BankAccount.Name, "Account Name", new { @class = "login2 pull-right pull-right-pro" })
+                                                            @Html.LabelFor(m => m.BankAccount.Name, "Account Name", new { @class = "login2 pull-right pull-right-pro"})
 
                                                         </div>
                                                         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-                                                            @Html.EditorFor(model => model.BankAccount.Name, new { htmlAttributes = new { @class = "form-control", required = "true" } })
+                                                            @Html.EditorFor(model => model.BankAccount.Name, new { htmlAttributes = new { @class = "form-control", required = "true", placeholder = "eg.Bank Of America"  } })
                                                             @Html.ValidationMessageFor(model => model.BankAccount.Name, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -105,8 +105,9 @@
 
                                                         </div>
                                                         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-                                                            @Html.EnumDropDownListFor(model => model.BankAccount.AccountType, new { htmlAttributes = new { @class = "form-control", required = "true" } })
-                                                          
+                                                            @Html.EnumDropDownListFor(model => model.BankAccount.AccountType, htmlAttributes: new { @class = "form-control",  required = "true"  })
+                                                           
+
                                                             @Html.ValidationMessageFor(model => model.BankAccount.AccountType, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -119,7 +120,7 @@
 
                                                         </div>
                                                         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-                                                            @Html.EditorFor(model => model.BankAccount.StartingBalance, new { htmlAttributes = new { @class = "form-control", required = "true" } })
+                                                            @Html.EditorFor(model => model.BankAccount.StartingBalance, new { htmlAttributes = new { @class = "form-control", required = "true" , placeholder = "eg.10000"  } })
                                                             @Html.ValidationMessageFor(model => model.BankAccount.StartingBalance, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -131,7 +132,7 @@
 
                                                         </div>
                                                         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-                                                            @Html.EditorFor(model => model.BankAccount.LowBalanceThreshold, new { htmlAttributes = new { @class = "form-control", required = "true" } })
+                                                            @Html.EditorFor(model => model.BankAccount.LowBalanceThreshold, new { htmlAttributes = new { @class = "form-control", required = "true" , placeholder = "eg.100" } })
                                                             @Html.ValidationMessageFor(model => model.BankAccount.LowBalanceThreshold, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -147,7 +148,7 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="account">
-                                        <h6 class="text-center">
+                                        <h6 class="text-center mg-b-20">
                                             Create budget category and estimate budget for the same.
                                         </h6>
 
@@ -160,7 +161,7 @@
 
                                                         </div>
                                                         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-                                                            @Html.EditorFor(model => model.Budget.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                                            @Html.EditorFor(model => model.Budget.Name, new { htmlAttributes = new { @class = "form-control" , placeholder = "eg. Utilities"  } })
                                                             @Html.ValidationMessageFor(model => model.Budget.Name, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -172,7 +173,7 @@
 
                                                         </div>
                                                         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-                                                            @Html.EditorFor(model => model.Budget.TargetAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                                            @Html.EditorFor(model => model.Budget.TargetAmount, new { htmlAttributes = new { @class = "form-control" , placeholder = "eg.200" } })
                                                             @Html.ValidationMessageFor(model => model.Budget.TargetAmount, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -194,7 +195,7 @@
 
                                                         </div>
                                                         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-                                                            @Html.EditorFor(model => model.BudgetItem.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                                            @Html.EditorFor(model => model.BudgetItem.Name, new { htmlAttributes = new { @class = "form-control" , placeholder = "eg.Electricity Bills"  } })
                                                             @Html.ValidationMessageFor(model => model.BudgetItem.Name, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>
@@ -207,7 +208,7 @@
 
                                                         </div>
                                                         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-                                                            @Html.EditorFor(model => model.BudgetItem.TargetAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                                            @Html.EditorFor(model => model.BudgetItem.TargetAmount, new { htmlAttributes = new { @class = "form-control" , placeholder = "eg.100" } })
                                                             @Html.ValidationMessageFor(model => model.BudgetItem.TargetAmount, "", new { @class = "text-danger" })
                                                         </div>
                                                     </div>

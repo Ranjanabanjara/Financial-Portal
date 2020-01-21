@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Project_4.Extensions;
+using Project_4.Helpers;
 using Project_4.Models;
 
 namespace Project_4.Controllers
@@ -17,11 +18,14 @@ namespace Project_4.Controllers
     public class InvitationsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private HouseholdHelper householdHelper = new HouseholdHelper();
 
         // GET: Invitations
+        [Authorize(Roles = "HouseholdHead")]
         public ActionResult Index()
         {
-            var invitations = db.Invitations.Include(i => i.Household);
+            var houseId = householdHelper.GetMyHouse().Id;
+            var invitations = db.Invitations.Where(i => i.HouseholdId == houseId);
             return View(invitations.ToList());
         }
 
@@ -81,12 +85,9 @@ namespace Project_4.Controllers
             return View(invitation);
         }
 
-        //remove member
-        [Authorize(Roles = "HouseholdHead")]
-        public ActionResult RemoveMember()
-        {      
-            return View();
-        }
+     
+
+
 
 
         // GET: Invitations/Edit/5
@@ -123,6 +124,7 @@ namespace Project_4.Controllers
         }
 
         // GET: Invitations/Delete/5
+        [Authorize(Roles = "HouseholdHead")]
         public ActionResult Delete(int? id)
         {
             if (id == null)

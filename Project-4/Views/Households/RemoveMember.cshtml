@@ -1,0 +1,92 @@
+﻿@model Project_4.Models.Household
+@{
+    ViewBag.Title = "RemoveMember";
+}
+
+<div class="breadcome-area mg-t-40 mg-b-30">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+                <div class="breadcome-list shadow-reset">
+                    <div class="breadcome-heading">                   
+
+                    <h1 class="text-center fl2">
+
+                        <a class="Warning Warning-color mg-b-10" href="#" data-toggle="modal" data-target="#removeMember"> <span class="btn btn-danger mg-b-30">Remove Member</span></a>
+                    </h1>
+
+                    </div>
+                    <ul class="breadcome-menu">
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div id="removeMember" class="modal modal-adminpro-general Customwidth-popup-WarningModal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header header-color-modal bg-color-3">
+                <h4 class="modal-title">Remove Member</h4>
+                <div class="modal-close-area modal-close-df">
+                    <a class="close" data-dismiss="modal" href="#"><i class="fa fa-close"></i></a>
+                </div>
+            </div>
+            <div class="modal-body">
+                <h5>Select a member you wish to remove from your Household!</h5>
+                <h6> <span><i class="fa fa-warning"></i></span>You cannot undo the changes that occurs!</h6>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { style = "width:90%;" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <div class="form-group-inner">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label class="login2 pull-right pull-right-pro"> Choose</label>
+
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.DropDownList("allmembers", null, "----select---", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-offset-5 col-md-2">
+                                    <div class="login-horizental cancel-wp pull-left">
+
+                                        <button class="btn btn-danger btn-block" type="submit">Remove</button>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a data-dismiss="modal" href="#">Cancel</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

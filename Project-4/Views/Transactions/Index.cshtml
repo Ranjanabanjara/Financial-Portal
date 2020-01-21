@@ -1,7 +1,11 @@
 ﻿@model IEnumerable<Project_4.Models.Transaction>
-
+@using Microsoft.AspNet.Identity
+@using Project_4.Models
 @{
     ViewBag.Title = "Index";
+    ApplicationDbContext db = new ApplicationDbContext();
+    var userId = HttpContext.Current.User.Identity.GetUserId();
+    var user = db.Users.Find(userId);
 }
 
 <!-- Data table area Start-->
@@ -13,6 +17,7 @@
                     <div class="sparkline8-hd">
                         <div class="main-sparkline8-hd">
                             <h1>All Transactions</h1>
+
                             <div class="sparkline8-outline-icon">
                                 <span class="sparkline8-collapse-link"><i class="fa fa-chevron-up"></i></span>
 
@@ -22,7 +27,10 @@
                     </div>
                     <div class="sparkline8-graph">
                         <div class="datatable-dashv1-list custom-datatable-overright">
-
+                            <a href="@Url.Action("Index", "Transactions", new { myTransactions = true})">                                
+                                <span class="btn btn-sm btn-danger mg-b-30" id="showmyBtn">Show My Transactions Only</span>
+                            </a>
+                            <a href="@Url.Action("Index", "Transactions")"> <span class="btn btn-sm btn-danger mg-b-30" id="showallBtn">Show All Transactions</span></a>
                             <table id="dataTable" class="table-striped table-bordered" style="width:100%">
 
                                 <thead>
@@ -41,7 +49,7 @@
                                         </th>
 
                                         <th>
-                                           TransType
+                                            TransType
                                         </th>
                                         <th>
                                             @Html.DisplayNameFor(model => model.Amount)
@@ -61,37 +69,41 @@
 
                                     @foreach (var item in Model)
                                     {
-                                    <tr style="line-height:30px">
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.BankAccount.Name)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.BankAccount.AccountType)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.BudgetItem.Budget.Name)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.BudgetItem.Name)
-                                        </td>
+                                        <tr style="line-height:30px">
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.BankAccount.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.BankAccount.AccountType)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.BudgetItem.Budget.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.BudgetItem.Name)
+                                            </td>
 
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.TransactionType)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Amount)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Memo)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Created)
-                                        </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.TransactionType)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Amount)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Memo)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Created)
+                                            </td>
 
-                                        <td>
-                                            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                                        </td>
-                                    </tr>
+                                            <td>
+                                                @if (item.OwnerId == userId)
+                                                {
+                                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+
+                                                }
+                                            </td>
+                                        </tr>
 
 
                                     }
@@ -107,3 +119,4 @@
     </div>
 </div>
 <!-- Data table area End-->
+

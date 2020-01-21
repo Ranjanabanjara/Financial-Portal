@@ -36,31 +36,41 @@ namespace Project_4.Controllers
         public ActionResult Setup(WizardViewModel model)
         {
             var user = db.Users.Find(User.Identity.GetUserId());
-            if (ModelState.IsValid)
-            {
+            
+           
                 //Add and save Bank Account
                 model.BankAccount.Created = DateTime.Now;
                 model.BankAccount.OwnerId = User.Identity.GetUserId();
                 model.BankAccount.HouseholdId = (int)user.HouseholdId;
+                model.BankAccount.CurrentBalance = model.BankAccount.StartingBalance;
                 db.BankAccounts.Add(model.BankAccount);
                 db.SaveChanges();
-
+              
                 //Add and save Budget
                 model.Budget.Created = DateTime.Now;
+
+                model.Budget.CurrentAmount = model.Budget.TargetAmount;
                 model.Budget.HouseholdId = (int)user.HouseholdId;
                 model.Budget.OwnerId = User.Identity.GetUserId();
                 db.Budgets.Add(model.Budget);
                 db.SaveChanges();
 
-
+            if (ModelState.IsValid)
+            {
                 //Add and save BudgetItem
                 model.BudgetItem.Created = DateTime.Now;
+
+                model.BudgetItem.CurrentAmount = model.BudgetItem.TargetAmount;
                 model.BudgetItem.BudgetId = model.Budget.Id;
                 db.BudgetItems.Add(model.BudgetItem);
                 db.SaveChanges();
-                return RedirectToAction("Details", "Households", new { id = user.HouseholdId });
-            }
-            return View(model);
+
+             }
+            
+
+                return RedirectToAction("Dashboard", "Households");
+            
+           
 
         }
 
@@ -130,13 +140,36 @@ namespace Project_4.Controllers
             return RedirectToAction("Dashboard", "Home");
         }
 
+        //remove member
+        [Authorize(Roles = "HouseholdHead")]
+
         public ActionResult RemoveMember()
         {
-        
+            var userId = User.Identity.GetUserId();
+            var myHouseholdId = db.Users.Find(userId).HouseholdId ?? 0;
+            if (myHouseholdId == 0)
+                return RedirectToAction("Lobby", "Home");
+            var members = db.Users.Where(u => u.HouseholdId == myHouseholdId && u.Id != userId);
+            ViewBag.allmembers = new SelectList(members, "Id", "FullName");
 
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> RemoveMember(string userId)
+        {
+            var HOHId = User.Identity.GetUserId();
+            var myHouseholdId = db.Users.Find(HOHId).HouseholdId;
+            var house = db.Households.Find(myHouseholdId);
+            var member = db.Users.Find(userId);
+            house.Owner.Remove(member);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Dashboard", "Households");
+        }
+      
+       
+       
 
         // GET: Households/Details/5
         public ActionResult Details(int? id)

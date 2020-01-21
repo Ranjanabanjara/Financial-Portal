@@ -1,11 +1,15 @@
 ﻿@using Project_4.Models;
 @using Project_4.Helpers;
-@using Project_4.Extensions
+@using Project_4.Extensions;
+@using Microsoft.AspNet.Identity
 @{
-
+    var currentUserId = HttpContext.Current.User.Identity.GetUserId();
+    ApplicationDbContext db = new ApplicationDbContext();
+    var currentUser = db.Users.Find(currentUserId);
+    HouseholdHelper householdHelper = new HouseholdHelper();
     RoleHelper roleHelper = new RoleHelper();
     UserHelper userHelper = new UserHelper();
-    HouseholdHelper householdHelper = new HouseholdHelper();
+
 
 }
 
@@ -96,7 +100,7 @@
                                         <a href="@Url.Action("Create", "Invitations")" class="dropdown-item">Invite Member</a>
 
                                     }
-                                    <a href="@Url.Action("AllTransactions", "Transactions")" class="dropdown-item">All Transactions</a>
+                                    <a href="@Url.Action("Index", "Transactions")" class="dropdown-item">All Transactions</a>
                                     <a href="@Url.Action("Create", "Transactions")" class="dropdown-item">Add Transaction</a>
                                 </div>
                             </li>
@@ -209,15 +213,14 @@
                                 </ul>
                             </li>
 
-                            <li class="nav-item nav-setting-open" >
+                            <li class="nav-item nav-setting-open">
                                 <a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="nav-link dropdown-toggle"><i class="fa fa-tasks"></i></a>
 
                                 <div role="menu" class="admintab-wrap menu-setting-wrap menu-setting-wrap-bg dropdown-menu animated flipInX">
                                     <ul class="nav nav-tabs custon-set-tab">
                                         <li class="active">
-                                            <a data-toggle="tab" href="#Members">Household Members</a>
+                                            <a data-toggle="tab" href="#Household">Household</a>
                                         </li>
-
 
                                         <li>
                                             <a data-toggle="tab" href="#Settings">Settings</a>
@@ -225,22 +228,13 @@
                                     </ul>
 
                                     <div class="tab-content">
-                                        <div id="Members" class="tab-pane fade in active">
-                                            <div class="notes-area-wrap">
-                                                <div class="note-heading-indicate">
-                                                    <h2><i class="fa fa-users"></i> All members</h2>
-                                                    <p>You have  members in this house.</p>
-                                                </div>
-                                                <div class="notes-list-area notes-menu-scrollbar">
+                                        <div id="Household" class="tab-pane fade in active">
 
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="Projects" class="tab-pane fade">
                                             <div class="projects-settings-wrap">
                                                 <div class="note-heading-indicate">
-                                                    <h2><i class="fa fa-cube"></i>Households</h2>
-                                                    <p> You have 20 projects. 5 not completed.</p>
+                                                    <h2><i class="fa fa-home"></i> Households</h2>
+                                                    <p>Total Members on House: @householdHelper.ListMembersOnHouse(householdHelper.GetMyHouse().Id).Count()</p>
+
                                                 </div>
                                                 <div class="project-st-list-area project-st-menu-scrollbar">
                                                     <ul class="projects-st-menu-list">
@@ -248,17 +242,28 @@
                                                             <a href="#">
                                                                 <div class="project-list-flow">
                                                                     <div class="projects-st-heading">
-                                                                        <h2>Web Development</h2>
-                                                                        <p> The point of using Lorem Ipsum is that it has a more or less normal.</p>
-                                                                        <span class="project-st-time">1 hours ago</span>
+                                                                        <h2>@householdHelper.GetMyHouse().Name</h2>
+                                                                        <p> This Household was created by @roleHelper.UsersInRole("HouseholdHead").FirstOrDefault().FullName</p>
+                                                                        <span class="project-st-time">@householdHelper.GetMyHouse().Created.ToShortDateString()</span>
                                                                     </div>
+
                                                                     <div class="projects-st-content">
-                                                                        <p>Completion with: 28%</p>
+                                                                        <p>Household Setup Completion</p>
                                                                         <div class="progress progress-mini">
-                                                                            <div style="width: 28%;" class="progress-bar progress-bar-danger"></div>
+                                                                            <div style="width: 75%;" class="progress-bar progress-bar-danger"></div>
                                                                         </div>
-                                                                        <p>Project end: 4:00 pm - 12.06.2014</p>
+
                                                                     </div>
+                                                                    <div class="projects-st-heading mg-t-50">
+                                                                        <h2>Your Contribution</h2>
+                                                                        <p>Total BankAccounts: @householdHelper.GetMyHouse().BankAccounts.Where(b => b.OwnerId == currentUserId).Count()</p>
+                                                                        <p>Total Transactions: @householdHelper.GetMyHouse().BankAccounts.Where(b => b.OwnerId == currentUserId).SelectMany(b => b.Transactions).Count()</p>
+                                                                        <p>Total BudegtCategories: @householdHelper.GetMyHouse().Budgets.Where(b => b.OwnerId == currentUserId).Count()</p>
+                                                                        <p>Total BudegtItems: @householdHelper.GetMyHouse().Budgets.Where(b => b.OwnerId == currentUserId).SelectMany(b => b.BudgetItems).Count()</p>
+                                                                       
+
+                                                                    </div>
+                                                                  
                                                                 </div>
                                                             </a>
                                                         </li>
@@ -266,8 +271,89 @@
                                                     </ul>
                                                 </div>
                                             </div>
+
+
                                         </div>
 
+                                        <div id="Settings" class="tab-pane fade">
+                                            <div class="setting-panel-area">
+                                                <div class="note-heading-indicate">
+                                                    <h2><i class="fa fa-gears"></i> Settings Panel</h2>
+
+                                                </div>
+                                                <ul class="setting-panel-list">
+                                                    <li>
+                                                        <div class="checkbox-setting-pro">
+                                                            <div class="checkbox-title-pro">
+                                                                <h2>Household Name</h2>
+                                                                <div class="ts-custom-check">
+                                                                    <a href="@Url.Action("Edit", "Households")">
+                                                                        <span class="btn btn-sm btn-danger mg-b-30" id="showmyBtn">Change</span>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="checkbox-setting-pro">
+                                                            <div class="checkbox-title-pro">
+                                                                <h2>Household Greeting</h2>
+                                                                <div class="ts-custom-check">
+                                                                    <a href="@Url.Action("Edit", "Households")">
+                                                                        <span class="btn btn-sm btn-danger mg-b-30" id="showmyBtn">Change</span>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="checkbox-setting-pro">
+                                                            <div class="checkbox-title-pro">
+                                                                <h2>BankAccounts</h2>
+                                                                <div class="ts-custom-check">
+                                                                    <a href="@Url.Action("Index", "BankAccounts")">
+                                                                        <span class="btn btn-sm btn-danger mg-b-30" id="showmyBtn">Settings</span>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+
+                                                    <li>
+                                                        <div class="checkbox-setting-pro">
+                                                            <div class="checkbox-title-pro">
+                                                                <h2>Budgets Categories</h2>
+                                                                <div class="ts-custom-check">
+                                                                    <a href="@Url.Action("Index", "Budgets")">
+                                                                        <span class="btn btn-sm btn-danger mg-b-30" id="showmyBtn">Settings</span>
+                                                                    </a>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+
+                                                    <li>
+                                                        <div class="checkbox-setting-pro">
+                                                            <div class="checkbox-title-pro">
+                                                                <h2>BudgetItems</h2>
+                                                                <div class="ts-custom-check">
+                                                                    <a href="@Url.Action("Index", "BudgetItems")">
+                                                                        <span class="btn btn-sm btn-danger mg-b-30" id="showmyBtn">Settings</span>
+                                                                    </a>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                </ul>
+
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </li>
@@ -312,12 +398,15 @@
                                         <li>
                                             <a href="@Url.Action("Dashboard", "Households")">Dashboard</a>
                                         </li>
-               
+
 
                                         @if (User.IsInRole("HouseholdHead"))
                                         {
                                             <li>
                                                 <a href="@Url.Action("Create", "Invitations")">Invite Member</a>
+                                            </li>
+                                            <li>
+                                                <a href="@Url.Action("RemoveMember", "Households")">Remove Member</a>
                                             </li>
 
                                         }
@@ -375,6 +464,7 @@
 
 
 
+
                             </ul>
                         </nav>
                     </div>
@@ -383,6 +473,7 @@
         </div>
     </div>
     <!-- Mobile Menu end -->
+
 
     @RenderBody()
 

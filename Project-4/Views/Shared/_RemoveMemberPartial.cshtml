@@ -1,0 +1,40 @@
+﻿@model Project_4.Models.Household
+@using Project_4.Models;
+@using Project_4.Helpers;
+
+@{
+    ViewBag.Title = "RemoveMember"; 
+    HouseholdHelper householdHelper = new HouseholdHelper();
+    var members = householdHelper.GetOnlymembers();    
+    ViewBag.allmembers = new SelectList(members, "Id", "FullName");
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { style = "width:90%;" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group-inner">
+        <div class="row">
+            <div class="col-md-3">
+                <label class="login2 pull-right pull-right-pro"> Choose</label>
+
+            </div>
+            <div class="col-md-8">
+                @Html.DropDownList("allmembers", null, "----select---", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-offset-5 col-md-2">
+            <div class="login-horizental cancel-wp pull-left">
+
+                <button class="btn btn-danger btn-block" type="submit">Remove</button>
+
+            </div>
+        </div>
+
+    </div>
+
+}
+
